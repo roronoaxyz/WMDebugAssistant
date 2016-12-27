@@ -9,11 +9,8 @@
 pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.git", :tag => '0.1.2'
 
 ## iOS代码
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
+    @property (strong, nonatomic) WMAssistantBall *assistantBall;
 
-//@property (strong, nonatomic) WMAssistantBall *assistantBall;
     self.assistantBall = [[WMAssistantBall alloc] init];//一定要作为一个局部属性
     self.assistantBall.addtionItems = @[@"暗门", @"接口数", @"网络", @"日志"];     //额外加一些按钮
     self.assistantBall.ballColor = [UIColor blueColor];       //按钮颜色
@@ -23,9 +20,7 @@ pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.gi
     //点击了某一个选项
     self.assistantBall.selectBlock = ^(NSString *title, UIButton *button) {
         NSLog(@"%@", title);
-//        [button setTitle:@"123" forState:UIControlStateNormal];
     };
-}
 
 ## Author
 
