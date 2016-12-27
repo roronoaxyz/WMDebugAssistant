@@ -13,9 +13,9 @@
 #import "WMNetworkFlow.h"           //流量
 #import "WMFpsHelper.h"            //fps
 
-/** 弱引用自己 */
-#define SBWS(weakSelf)  __weak __typeof(&*self)weakSelf = self;
-#define WMAssistantBallButtonCount        (self.itemArray.count / 2)
+
+#define WMWS(weakSelf)  __weak __typeof(&*self)weakSelf = self;/** 弱引用自己 */
+#define kWMBallCount        (self.itemArray.count / 2)
 #define kWMThisWidth CGRectGetWidth(self.frame)
 #define kWMThisHeight CGRectGetHeight(self.frame)
 #define kWMWindowWidth CGRectGetWidth(self.window.frame)
@@ -26,72 +26,38 @@
 @property (nonatomic, assign) UIWindow *window;
 @property (nonatomic, assign) NSInteger bWidth;           //球大小
 @property (nonatomic, assign) BOOL  isShowTab;
-@property (nonatomic,strong) NSArray *itemArray;     //
-@property (nonatomic,strong)UIPanGestureRecognizer *pan;
-@property (nonatomic,strong)UITapGestureRecognizer *tap;
-@property (nonatomic,strong)UIButton *mainImageButton;
-@property (nonatomic,strong)UIView *contentView;
-@property (nonatomic,strong)CAAnimationGroup *animationGroup;
-@property (nonatomic,strong)CAShapeLayer *circleShape;
+@property (nonatomic, strong) NSArray *itemArray;     //
+@property (nonatomic, strong) UIPanGestureRecognizer *pan;//移动
+@property (nonatomic, strong) UITapGestureRecognizer *tap;//点击
+@property (nonatomic, strong) UIButton *mainImageButton;    //点击的小球
+@property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) CAAnimationGroup *animationGroup;
+@property (nonatomic, strong) CAShapeLayer *circleShape;
 
-@property (nonatomic,strong) WMCpuHelper *cpuHelper;       //cpu
-@property (nonatomic,strong) WMMemeryHelper *memHelper;       //内存
-@property (nonatomic,strong) WMNetworkFlow *networkFlow;       //流量
-@property (nonatomic,strong) WMFpsHelper *fpsHelper;       //fps
+@property (nonatomic, strong) WMCpuHelper *cpuHelper;       //cpu
+@property (nonatomic, strong) WMMemeryHelper *memHelper;       //内存
+@property (nonatomic, strong) WMNetworkFlow *networkFlow;       //流量
+@property (nonatomic, strong) WMFpsHelper *fpsHelper;       //fps
 
 
 @end
 
 @implementation WMAssistantBall
-
-- (instancetype)initWithFrame:(CGRect)frame{
-    self = [super initWithFrame:frame];
-    
-    return self;
-}
-
 //
-- (instancetype)initWithWindow:(UIWindow *)window {
+- (id)init {
     CGFloat sWidth = [UIScreen mainScreen].bounds.size.width;
     CGFloat sHeight = [UIScreen mainScreen].bounds.size.height;
-    CGFloat scale = (1/[UIScreen mainScreen].scale);
 
     CGRect frame = CGRectMake(sWidth - 25, sHeight / 5, 50, 50);
     if(self = [super initWithFrame:frame]) {
-        self.window = window;
+        UIWindow *w = [UIApplication sharedApplication].windows[0];
+        self.window = w;
+        self.bWidth = 50;
         
         self.backgroundColor = [UIColor clearColor];
         self.windowLevel = UIWindowLevelAlert + 1;  //如果想在 alert 之上，则改成 + 2
         self.rootViewController = [UIViewController new];
         [self makeKeyAndVisible];
-        
-        self.bWidth = 50;
-        
-        [self loadContentView];
-        
-        //
-        [self loadMainButton];
-        
-        //添加按钮
-        [self setButtons];
-        
-        //手势
-        [self loadGesture];
-        
-        //cpu
-        [self loadCpu];
-
-        //内存
-        [self loadMemery];
-        
-        //
-        [self loadFlow];
-        
-        //
-        [self loadFps];
-        
-        //
-        [self doBorderWidth:scale color:nil cornerRadius:self.bWidth / 2];
         
         //设备旋转的时候收回按钮
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
@@ -104,23 +70,27 @@
 }
 
 - (void)loadContentView {
-    self.contentView = [[UIView alloc] initWithFrame:(CGRect){self.bWidth ,0, WMAssistantBallButtonCount * (self.bWidth + 5),self.bWidth}];
+    self.contentView = [[UIView alloc] initWithFrame:(CGRect){self.bWidth ,0, kWMBallCount * (self.bWidth + 5),self.bWidth}];
     self.contentView.alpha  = 0;
     [self addSubview:self.contentView];
 }
 
 - (void)loadMainButton {
-    UIImage *nImage = [UIImage wm_imageWithColor:[UIColor redColor] withFrame:CGRectMake(0, 0, self.bWidth, self.bWidth)];
+    UIImage *nImage = [UIImage wm_imageWithColor:[UIColor whiteColor] withFrame:CGRectMake(0, 0, self.bWidth, self.bWidth)];
     nImage = [nImage wm_roundCorner];
     
-    _mainImageButton =  [UIButton buttonWithType:UIButtonTypeCustom];
-    [_mainImageButton setFrame:(CGRect){0, 0, self.bWidth, self.bWidth}];
-    [_mainImageButton setImage:nImage forState:UIControlStateNormal];
-//    [_mainImageButton setImage:hImage forState:UIControlStateHighlighted];
-    [_mainImageButton addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
-    [_mainImageButton addTarget:self action:@selector(mainBtnTouchDown) forControlEvents:UIControlEventTouchDown];
+    self.mainImageButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.mainImageButton setFrame:(CGRect){0, 0, self.bWidth, self.bWidth}];
+    [self.mainImageButton setImage:nImage forState:UIControlStateNormal];
+    self.mainImageButton.layer.shadowColor = [UIColor blackColor].CGColor;//shadowColor阴影颜色
+    self.mainImageButton.layer.shadowOffset = CGSizeMake(0,0);//shadowOffset阴影偏移，默认(0, -3),这个跟shadowRadius配合使用
+    self.mainImageButton.layer.shadowOpacity = 1;//阴影透明度，默认0
+    self.mainImageButton.layer.shadowRadius = 3;//阴影半径，默认3
+//    [self.mainImageButton setImage:hImage forState:UIControlStateHighlighted];
+    [self.mainImageButton addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
+    [self.mainImageButton addTarget:self action:@selector(mainBtnTouchDown) forControlEvents:UIControlEventTouchDown];
     
-    [self addSubview:_mainImageButton];
+    [self addSubview:self.mainImageButton];
 }
 
 - (void)mainBtnTouchDown{
@@ -141,7 +111,7 @@
 #pragma mark -
 - (void)loadCpu {
     //
-    SBWS(__self)
+    WMWS(__self)
     self.cpuHelper = [[WMCpuHelper alloc] init];
     [self.cpuHelper startblock:^(CGFloat cpuUsage) {
         [__self doDisplayCpu:cpuUsage];
@@ -157,7 +127,7 @@
 #pragma mark -
 - (void)loadMemery {
     //
-    SBWS(__self)
+    WMWS(__self)
     self.memHelper = [[WMMemeryHelper alloc] init];
     [self.memHelper startblock:^(CGFloat usedMemory) {
         [__self doDisplayMemory:usedMemory];
@@ -174,7 +144,7 @@
 #pragma mark -网速
 - (void)loadFlow {
     //
-    SBWS(__self)
+    WMWS(__self)
     self.networkFlow = [[WMNetworkFlow alloc] init];
     [self.networkFlow startblock:^(u_int32_t sendFlow, u_int32_t receivedFlow) {
         [__self doDisplayNet:sendFlow receivedFlow:receivedFlow];
@@ -190,7 +160,7 @@
 #pragma mark -fps
 - (void)loadFps {
     //
-    SBWS(__self)
+    WMWS(__self)
     self.fpsHelper = [[WMFpsHelper alloc] init];
     [self.fpsHelper startblock:^(CGFloat fps) {
         [__self doDisplayfps:fps];
@@ -226,13 +196,11 @@
 }
 
 - (void)setButtons{
-    self.itemArray = @[
-                         @[@"CPU",@"0%"],
-                         @[@"内存", @"0MB"],
-                         @[@"流量",@"0kb/s"],
-                         @[@"FPS",@"0fps"],
-                         ];
-    
+    self.itemArray = @[@"CPU",@"内存", @"流量",@"FPS"];
+    if (self.addtionItems.count <= 6) {
+        self.itemArray = [self.itemArray arrayByAddingObjectsFromArray:self.addtionItems];
+    }
+
     NSArray *colorArray = @[[UIColor whiteColor],
                             [UIColor redColor],
                             [UIColor greenColor],
@@ -245,9 +213,8 @@
                             [UIColor brownColor],
                             ];
     for (int i=0; i<self.itemArray.count; i++) {
-        NSArray *item = self.itemArray[i];
-        
-        NSString *title = item[1];
+        NSString *title = self.itemArray[i];
+
         UIImage *nImage = [UIImage wm_imageWithColor:colorArray[i] withFrame:CGRectMake(0, 0, 18, 18)];
         nImage = [nImage wm_roundCorner];
         
@@ -264,18 +231,13 @@
     
 //    UINavigationController *navCtrl = [ELLaunchHelper langkeMainNavCtrl];
 //    
-//    UIButton *button = (UIButton *)sender;
-//    NSInteger t = button.tag - 0x999;
-//    if (t == 5) {
-//        [navCtrl el_enterHiddenDoor];
-//    }
-//    else if (t == 6) {
-//        [navCtrl wm_quickOpenCtrl:@"ELNetDiagnoController"];
-//    }
-//    else if (t == 7) {
-//        [self doSendInfoMail];
-//    }
+    UIButton *button = (UIButton *)sender;
+    NSInteger t = button.tag - 0x999;
 
+    NSString *title = self.itemArray[t];
+    if (self.selectBlock) {
+        self.selectBlock(title, button);
+    }
 }
 
 #pragma mark  ------- 绘图操作 ----------
@@ -290,7 +252,7 @@
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     CGFloat lengths[] = {2,1};
     CGContextSetLineDash(context, 0, lengths,2);
-    for (int i = 1; i < WMAssistantBallButtonCount; i++){
+    for (int i = 1; i < kWMBallCount; i++){
         CGContextMoveToPoint(context, CGRectGetMinX(self.contentView.frame) + i * self.bWidth, 5.0f * 2);
         CGContextAddLineToPoint(context, CGRectGetMinX(self.contentView.frame) + i * self.bWidth, self.bWidth - 5.0f * 2);
     }
@@ -405,17 +367,17 @@
             
             self.contentView.alpha  = 1;
             
-            CGFloat sWidth = (kWMThisWidth + WMAssistantBallButtonCount * iWidth);
+            CGFloat sWidth = (kWMThisWidth + kWMBallCount * iWidth);
             CGFloat sHeight = self.bWidth * 2;
             
             if (thisX <= kWMWindowWidth/2) {
                 self.frame = CGRectMake(thisX, thisY, sWidth, sHeight);
                 self.contentView.frame = (CGRect){iWidth, 0, sWidth - iWidth, sHeight};
             }else{
-                CGFloat sLeft = thisX  - WMAssistantBallButtonCount * iWidth;
+                CGFloat sLeft = thisX  - kWMBallCount * iWidth;
                 
                 self.frame = CGRectMake(sLeft, thisY,  sWidth, sHeight);
-                self.mainImageButton.frame = CGRectMake((WMAssistantBallButtonCount * iWidth), 0, self.bWidth, self.bWidth);
+                self.mainImageButton.frame = CGRectMake((kWMBallCount * iWidth), 0, self.bWidth, self.bWidth);
                 self.contentView.frame = (CGRect){10.0f, 0 , sWidth - self.bWidth, sHeight};
             }
             self.backgroundColor = [UIColor colorWithRed:0x33/255.0f green:0x33/255.0f blue:0x33/255.0f alpha:0.5];
@@ -445,7 +407,7 @@
                 self.frame = CGRectMake(thisX, thisY, self.bWidth ,self.bWidth);
             }else{
                 self.mainImageButton.frame = CGRectMake(0, 0, self.bWidth, self.bWidth);
-                self.frame = CGRectMake(thisX + WMAssistantBallButtonCount * iWidth, thisY, self.bWidth ,self.bWidth);
+                self.frame = CGRectMake(thisX + kWMBallCount * iWidth, thisY, self.bWidth ,self.bWidth);
             }
             self.backgroundColor = [UIColor clearColor];
         }];
@@ -467,15 +429,10 @@
     }];
 }
 
-- (void)doBorderWidth:(CGFloat)width color:(UIColor *)color cornerRadius:(CGFloat)cornerRadius{
-  //  self.layer.masksToBounds = YES;
-    self.layer.cornerRadius = cornerRadius;
-    self.layer.borderWidth = width;
-    if (!color) {
-        self.layer.borderColor = [UIColor whiteColor].CGColor;
-    }else{
-        self.layer.borderColor = color.CGColor;
-    }
+- (void)doBorderWidth{
+    self.layer.cornerRadius = self.bWidth / 2;
+    self.layer.borderWidth = (1/[UIScreen mainScreen].scale);
+    self.layer.borderColor = [UIColor whiteColor].CGColor;
 }
 
 #pragma mark  ------- animation -------------
@@ -565,12 +522,50 @@
 }
 
 #pragma mark  ------- 事件 ---------
-- (void)dissmissWindow{
-    self.hidden = YES;
+/** 显示 在属性配置完成之后 **/
+/** 只能调用一次 后面几次不会生效 **/
+- (void)doWork {
+    if (self.tag == 0x99) {
+        return;
+    }
+    self.tag = 0x99;
+
+    //内容
+    [self loadContentView];
+
+    //主按钮
+    [self loadMainButton];
+
+    //添加按钮
+    [self setButtons];
+
+    //手势
+    [self loadGesture];
+
+    //cpu
+    [self loadCpu];
+
+    //内存
+    [self loadMemery];
+
+    //下载
+    [self loadFlow];
+
+    //fps
+    [self loadFps];
+
+    //描边
+    [self doBorderWidth];
 }
 
-- (void)showWindow{
-    self.hidden = NO;
+/** 通过标题获取按钮 默认的4个是 @"CPU",@"内存", @"流量",@"FPS" **/
+- (UIButton *)buttonOfTitle:(NSString *)title {
+    NSInteger index = [self.itemArray indexOfObject:title];
+    if (index != NSNotFound) {
+        UIButton *button = [self.contentView viewWithTag:0x999 + index];
+        return button;
+    }
+    return nil;
 }
 
 #pragma mark  ------- 设备旋转 -----------

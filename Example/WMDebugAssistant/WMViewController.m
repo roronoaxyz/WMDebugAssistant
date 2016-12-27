@@ -20,8 +20,15 @@
 {
     [super viewDidLoad];
 
-    UIWindow *w = [UIApplication sharedApplication].windows[0];
-    self.floatWindow = [[WMAssistantBall alloc] initWithWindow:w];
+    self.floatWindow = [[WMAssistantBall alloc] init];
+    self.floatWindow.addtionItems = @[@"暗门", @"接口数", @"网络", @"日志"];
+    [self.floatWindow doWork];
+    
+
+    self.floatWindow.selectBlock = ^(NSString *title, UIButton *button) {
+        NSLog(@"%@", title);
+        [button setTitle:@"123" forState:UIControlStateNormal];
+    };
 //    self.view.backgroundColor = [UIColor lightGrayColor];
 	// Do any additional setup after loading the view, typically from a nib.
 }
