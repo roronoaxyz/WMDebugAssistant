@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		113CE42B1CAB164E85AA1392 /* Pods_WMDebugAssistant_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EFFCF17A63371F7933B24DC6 /* Pods_WMDebugAssistant_Example.framework */; };
+		434B1FA703AE776D59366E9D /* libPods-WMDebugAssistant_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2E5E112C8276173D764D81E /* libPods-WMDebugAssistant_Example.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -21,7 +21,6 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		764743795093056219741AB0 /* Pods_WMDebugAssistant_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73F264EB8713A26548499399 /* Pods_WMDebugAssistant_Tests.framework */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -61,10 +60,8 @@
 		73F264EB8713A26548499399 /* Pods_WMDebugAssistant_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WMDebugAssistant_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		BF1226F6AEDA9CD28B14E490 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		EC2C6BE19531275163BBBC1A /* Pods-WMDebugAssistant_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WMDebugAssistant_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WMDebugAssistant_Tests/Pods-WMDebugAssistant_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		EF8E992C2C2480A598F3450F /* Pods-WMDebugAssistant_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WMDebugAssistant_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WMDebugAssistant_Tests/Pods-WMDebugAssistant_Tests.release.xcconfig"; sourceTree = "<group>"; };
-		EFFCF17A63371F7933B24DC6 /* Pods_WMDebugAssistant_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WMDebugAssistant_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F1F537D1820E1B85158E7097 /* WMDebugAssistant.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = WMDebugAssistant.podspec; path = ../WMDebugAssistant.podspec; sourceTree = "<group>"; };
+		F2E5E112C8276173D764D81E /* libPods-WMDebugAssistant_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WMDebugAssistant_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +72,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				113CE42B1CAB164E85AA1392 /* Pods_WMDebugAssistant_Example.framework in Frameworks */,
+				434B1FA703AE776D59366E9D /* libPods-WMDebugAssistant_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,7 +83,6 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				764743795093056219741AB0 /* Pods_WMDebugAssistant_Tests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,8 +117,8 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				EFFCF17A63371F7933B24DC6 /* Pods_WMDebugAssistant_Example.framework */,
 				73F264EB8713A26548499399 /* Pods_WMDebugAssistant_Tests.framework */,
+				F2E5E112C8276173D764D81E /* libPods-WMDebugAssistant_Example.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -187,8 +183,6 @@
 			children = (
 				1949FC7EE70369A2D42861AB /* Pods-WMDebugAssistant_Example.debug.xcconfig */,
 				20070AE365425580FB327319 /* Pods-WMDebugAssistant_Example.release.xcconfig */,
-				EC2C6BE19531275163BBBC1A /* Pods-WMDebugAssistant_Tests.debug.xcconfig */,
-				EF8E992C2C2480A598F3450F /* Pods-WMDebugAssistant_Tests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -220,12 +214,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "WMDebugAssistant_Tests" */;
 			buildPhases = (
-				0250003A7F4E373D92D9ED2B /* [CP] Check Pods Manifest.lock */,
 				6003F5AA195388D20070C39A /* Sources */,
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
-				22ED01CB41BD0FED36A71917 /* [CP] Embed Pods Frameworks */,
-				19330AAEB96B79DE20323D49 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -293,51 +284,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0250003A7F4E373D92D9ED2B /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		19330AAEB96B79DE20323D49 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WMDebugAssistant_Tests/Pods-WMDebugAssistant_Tests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		22ED01CB41BD0FED36A71917 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WMDebugAssistant_Tests/Pods-WMDebugAssistant_Tests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		3A69B7422545C4F89F3E425A /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -541,7 +487,6 @@
 		};
 		6003F5C3195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC2C6BE19531275163BBBC1A /* Pods-WMDebugAssistant_Tests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -565,7 +510,6 @@
 		};
 		6003F5C4195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF8E992C2C2480A598F3450F /* Pods-WMDebugAssistant_Tests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				FRAMEWORK_SEARCH_PATHS = (
