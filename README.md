@@ -5,6 +5,13 @@
 [![License](https://img.shields.io/cocoapods/l/WMDebugAssistant.svg?style=flat)](http://cocoapods.org/pods/WMDebugAssistant)
 [![Platform](https://img.shields.io/cocoapods/p/WMDebugAssistant.svg?style=flat)](http://cocoapods.org/pods/WMDebugAssistant)
 
+## 作用
+    在自己的应用中，实时监测CPU，内存，网络下载，fps的状态，帮助开发定位。
+    等于XCode 调试时候的 debeg 功能，但是能在发布时候使用。
+    有效定位 手机发烫，内存泄露，浪费流量，界面卡顿等问题。
+    
+ ![image](https://github.com/roronoaxyz/WMDebugAssistant/blob/master/Example/assistant.gif)
+
 ## pod使用
 pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.git", :tag => '0.1.2'
 
