@@ -10,7 +10,7 @@
 #import "WMAssistantBall.h"/** 监控助手 **/
 
 @interface WMViewController ()
-@property (strong, nonatomic) WMAssistantBall *floatWindow;
+@property (strong, nonatomic) WMAssistantBall *assistantBall;
 
 @end
 
@@ -20,17 +20,18 @@
 {
     [super viewDidLoad];
 
-    self.floatWindow = [[WMAssistantBall alloc] init];
-    self.floatWindow.addtionItems = @[@"暗门", @"接口数", @"网络", @"日志"];
-    [self.floatWindow doWork];
-    
+//@property (strong, nonatomic) WMAssistantBall *assistantBall;
+    self.assistantBall = [[WMAssistantBall alloc] init];//一定要作为一个局部属性
+    self.assistantBall.addtionItems = @[@"暗门", @"接口数", @"网络", @"日志"];     //额外加一些按钮
+    self.assistantBall.ballColor = [UIColor blueColor];       //按钮颜色
+    self.assistantBall.shapeColor = [UIColor redColor];           //移动时的光圈颜色
+    [self.assistantBall doWork];              //很重要 一定要调用
 
-    self.floatWindow.selectBlock = ^(NSString *title, UIButton *button) {
+    //点击了某一个选项
+    self.assistantBall.selectBlock = ^(NSString *title, UIButton *button) {
         NSLog(@"%@", title);
-        [button setTitle:@"123" forState:UIControlStateNormal];
+//        [button setTitle:@"123" forState:UIControlStateNormal];
     };
-//    self.view.backgroundColor = [UIColor lightGrayColor];
-	// Do any additional setup after loading the view, typically from a nib.
 }
 
 - (void)didReceiveMemoryWarning
