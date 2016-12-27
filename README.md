@@ -5,20 +5,27 @@
 [![License](https://img.shields.io/cocoapods/l/WMDebugAssistant.svg?style=flat)](http://cocoapods.org/pods/WMDebugAssistant)
 [![Platform](https://img.shields.io/cocoapods/p/WMDebugAssistant.svg?style=flat)](http://cocoapods.org/pods/WMDebugAssistant)
 
-## Example
+## pod使用
+pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.git", :tag => '0.1.2'
 
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
+## iOS代码
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
-## Requirements
+//@property (strong, nonatomic) WMAssistantBall *assistantBall;
+    self.assistantBall = [[WMAssistantBall alloc] init];//一定要作为一个局部属性
+    self.assistantBall.addtionItems = @[@"暗门", @"接口数", @"网络", @"日志"];     //额外加一些按钮
+    self.assistantBall.ballColor = [UIColor blueColor];       //按钮颜色
+    self.assistantBall.shapeColor = [UIColor redColor];           //移动时的光圈颜色
+    [self.assistantBall doWork];              //很重要 一定要调用
 
-## Installation
-
-WMDebugAssistant is available through [CocoaPods](http://cocoapods.org). To install
-it, simply add the following line to your Podfile:
-
-```ruby
-pod "WMDebugAssistant"
-```
+    //点击了某一个选项
+    self.assistantBall.selectBlock = ^(NSString *title, UIButton *button) {
+        NSLog(@"%@", title);
+//        [button setTitle:@"123" forState:UIControlStateNormal];
+    };
+}
 
 ## Author
 
