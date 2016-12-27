@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'WMDebugAssistant_Example' do
+  pod 'WMDebugAssistant', :path => '../'
+
+  target 'WMDebugAssistant_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
