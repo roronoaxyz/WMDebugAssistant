@@ -584,7 +584,10 @@
     self.layer.masksToBounds = YES;
     
     //旋转前要先改变frame，否则坐标有问题（临时办法）
-    self.frame = CGRectMake(0, kWMWindowHeight - CGRectGetMinY(self.frame) - kWMThisHeight, kWMThisWidth,kWMThisHeight);
+    CGFloat sWidth = [UIScreen mainScreen].bounds.size.width;
+    CGFloat sHeight = [UIScreen mainScreen].bounds.size.height;
+    CGRect frame = CGRectMake(sWidth - 25, sHeight / 5, 50, 50);
+    self.frame = frame;
     
     if (self.isShowTab) {
         [self doTap:nil];
