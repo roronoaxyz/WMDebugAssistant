@@ -12,6 +12,7 @@
 #import "WMMemeryHelper.h"              //内存
 #import "WMNetworkFlow.h"           //流量
 #import "WMFpsHelper.h"            //fps
+#import "WMAssistantController.h"
 
 
 #define WMWS(weakSelf)  __weak __typeof(&*self)weakSelf = self;/** 弱引用自己 */
@@ -56,9 +57,9 @@
         
         self.backgroundColor = [UIColor clearColor];
         self.windowLevel = UIWindowLevelAlert + 1;  //如果想在 alert 之上，则改成 + 2
-        self.rootViewController = [UIViewController new];
+        self.rootViewController = [WMAssistantController new];
         [self makeKeyAndVisible];
-        
+
         //设备旋转的时候收回按钮
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     }
