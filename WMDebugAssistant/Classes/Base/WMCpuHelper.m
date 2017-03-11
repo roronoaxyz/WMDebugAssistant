@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) NSTimer *timer;
 
+@property (nonatomic, strong) NSMutableArray *records;
+
 @property (nonatomic, copy) void (^cpuBlock)(CGFloat cpuUsage);  //每秒获取
 
 @end
@@ -25,8 +27,16 @@
     self.cpuBlock = nil;
 }
 
+- (NSDictionary *)getRecords {
+    return self.records;
+}
+
 
 - (void)startblock:(void (^)(CGFloat cpuUsage))block {
+    if (!self.records) {
+        self.records = [NSMutableArray new];
+    }
+
     self.cpuBlock = block;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(getCpuUsage) userInfo:nil repeats:YES];
 }
@@ -38,8 +48,15 @@
 
 /** 流量消耗状态 **/
 - (void)getCpuUsage {
+    CGFloat u = [WMCpuHelper getCpuUsage];
+    [self.records addObject:@{@"date":[NSDate date], @"value":@(u)}];
+
+    //记录10分钟
+    if (self.records.count > 600) {
+        [self.records removeObjectAtIndex:0];
+    }
+
     if (self.cpuBlock) {
-        CGFloat u = [WMCpuHelper getCpuUsage];
         self.cpuBlock(u);
     }
 }

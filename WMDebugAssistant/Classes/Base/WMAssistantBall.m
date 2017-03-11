@@ -12,7 +12,8 @@
 #import "WMMemeryHelper.h"              //内存
 #import "WMNetworkFlow.h"           //流量
 #import "WMFpsHelper.h"            //fps
-#import "WMAssistantController.h"
+#import "WMAssistantController.h"       //空界面  window 用
+#import "WMAssistantInfoController.h"           //报表界面
 
 
 #define WMWS(weakSelf)  __weak __typeof(&*self)weakSelf = self;/** 弱引用自己 */
@@ -577,6 +578,27 @@
         return button;
     }
     return nil;
+}
+
+//生成一张报表 类型   1 cpu ;2 内存 ; 3 网速 ; 
+- (UIViewController *)makeChart:(NSInteger)flag {
+    WMAssistantInfoController *aCtrl = [[WMAssistantInfoController alloc] init];
+    if (flag == 1) {
+        aCtrl.title = @"CPU";
+        aCtrl.records = [self.cpuHelper getRecords];
+    }
+    else if (flag == 2) {
+        aCtrl.title = @"内存";
+        aCtrl.records = [self.memHelper getRecords];
+    }
+    else if (flag == 3) {
+        aCtrl.title = @"流量";
+        aCtrl.records = [self.networkFlow getRecords];
+    }
+
+
+
+    return aCtrl;
 }
 
 #pragma mark  ------- 设备旋转 -----------

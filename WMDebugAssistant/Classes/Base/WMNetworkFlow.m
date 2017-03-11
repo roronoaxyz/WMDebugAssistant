@@ -17,6 +17,8 @@
 @property (assign,nonatomic) uint32_t historySent;
 @property (assign,nonatomic) uint32_t historyRecived;
 @property (assign,nonatomic) BOOL     isFirst;
+
+@property (nonatomic, strong) NSMutableArray *records;
 @property (nonatomic, strong)NSTimer *timer;
 
 @end
@@ -37,8 +39,16 @@
 
     self.netBlock = nil;
 }
+/** 获取 流量 记录 **/
+- (NSDictionary *)getRecords {
+    return self.records;
+}
 
 - (void)startblock:(void (^)(u_int32_t sendFlow, u_int32_t receivedFlow))block {
+    if (!self.records) {
+        self.records = [NSMutableArray new];
+    }
+    
     self.netBlock = block;
     self.isFirst = YES;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(getNetflow) userInfo:nil repeats:YES];
@@ -99,6 +109,14 @@
     else {
         uint32_t nowSent = (self.kWiFiSent + self.kWWANSent - self.historySent);
         uint32_t nowRecived = (self.kWiFiReceived + self.kWWANReceived - self.historyRecived);
+
+        //记录
+        [self.records addObject:@{@"date":[NSDate date], @"value":@(nowRecived)}];
+
+        //记录10分钟
+        if (self.records.count > 600) {
+            [self.records removeObjectAtIndex:0];
+        }
 
         if (self.netBlock) {
             self.netBlock(nowSent, nowRecived);

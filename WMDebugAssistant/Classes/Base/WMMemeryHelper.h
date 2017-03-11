@@ -14,6 +14,9 @@
 /** 获取当前应用的内存 */
 + (CGFloat)getUsedMemory;
 
+/** 获取 内存 记录 **/
+- (NSDictionary *)getRecords;
+
 /** 开始监听**/
 - (void)startblock:(void (^)(CGFloat memUsage))block;
 - (void)stop;

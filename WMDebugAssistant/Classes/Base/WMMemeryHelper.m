@@ -13,6 +13,8 @@
 
 @property (nonatomic, strong) NSTimer *timer;
 
+@property (nonatomic, strong) NSMutableArray *records;
+
 @property (nonatomic, copy) void (^memBlock)(CGFloat memUsage);  //每秒获取
 
 @end
@@ -27,6 +29,10 @@
 
 
 - (void)startblock:(void (^)(CGFloat memUsage))block {
+    if (!self.records) {
+        self.records = [NSMutableArray new];
+    }
+
     self.memBlock = block;
     self.timer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(getMemUsage) userInfo:nil repeats:YES];
 }
@@ -38,10 +44,22 @@
 
 /**  **/
 - (void)getMemUsage {
+    CGFloat u = [WMMemeryHelper getUsedMemory];
+    [self.records addObject:@{@"date":[NSDate date], @"value":@(u)}];
+
+    //记录10分钟
+    if (self.records.count > 600) {
+        [self.records removeObjectAtIndex:0];
+    }
+
     if (self.memBlock) {
-        CGFloat u = [WMMemeryHelper getUsedMemory];
         self.memBlock(u);
     }
+}
+
+/** 获取 内存 记录 **/
+- (NSDictionary *)getRecords {
+    return self.records;
 }
 
 /** 获取当前应用的内存 */
