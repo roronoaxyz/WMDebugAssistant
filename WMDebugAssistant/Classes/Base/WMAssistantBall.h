@@ -3,7 +3,7 @@
 //  EMLive
 //
 //  Created by Thomas Wang on 2016/11/25.
-//  Copyright © 2016年 roronoa. All rights reserved.
+//  Copyright © 2017年 roronoa. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

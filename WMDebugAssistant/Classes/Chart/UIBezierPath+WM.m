@@ -22,7 +22,7 @@
     return [contractionFactorAssociatedObject floatValue];
 }
 
-- (void)addBezierThroughPoints:(NSArray *)pointArray
+- (void)wm_addBezierThroughPoints:(NSArray *)pointArray
 {
     NSAssert(pointArray.count > 0, @"You must give at least 1 point for drawing the curve.");
     

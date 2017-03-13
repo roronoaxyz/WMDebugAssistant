@@ -17,6 +17,6 @@
  *
  *  @param pointArray Points you want to through. You must give at least 1 point for drawing curve.
  */
-- (void)addBezierThroughPoints:(NSArray *)pointArray;
+- (void)wm_addBezierThroughPoints:(NSArray *)pointArray;
 
 @end

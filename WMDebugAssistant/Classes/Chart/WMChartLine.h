@@ -2,8 +2,8 @@
 //  WMChartLine.h
 //  曲线-新算法
 //
-//  Created by 邬志成 on 16/7/20.
-//  Copyright © 2016年 邬志成. All rights reserved.
+//  Created by thomas on 16/7/20.
+//  Copyright © 2017年 thomas. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -30,6 +30,9 @@ typedef enum : NSInteger {
 
 /* 以上 设置完毕后才调用绘图方法 */
 -(void)startDrawWithLineType:(WMChartLineType)lineType;
+
+/* 回调 */
+@property (nonatomic, copy) void(^clickPoint)(NSInteger index); //点击了一个点 x, y 是数据的位置
 
 #pragma mark - 可选设置
 /**

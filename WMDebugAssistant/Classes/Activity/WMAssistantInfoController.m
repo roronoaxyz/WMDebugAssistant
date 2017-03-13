@@ -9,14 +9,13 @@
 #import "WMAssistantInfoController.h"
 #import "WMChartLine.h"
 
-// 用到的两个宏：
-#define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
-#define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define WMWS(weakSelf)  __weak __typeof(&*self)weakSelf = self;/** 弱引用自己 */
 
 @interface WMAssistantInfoController () {
 
     UIButton *dButton;
     WMChartLine *v;
+    UILabel *pointLbl; //点击的标签
 }
 
 @property (nonatomic, strong) NSMutableArray *x_vls;        //x轴
@@ -59,8 +58,6 @@
 
 
 - (void)chartDidLoad {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"mm:ss";
 
     self.x_vls = [NSMutableArray new];
     self.y_vls = [NSMutableArray new];
@@ -68,8 +65,8 @@
     //日期对应数据
     for (int i =0; i<self.records.count; i++) {
         NSDictionary *dict = self.records[i];
-        NSString *xText = [formatter stringFromDate:dict[@"date"]];
-        [self.x_vls addObject:xText];
+
+        [self.x_vls addObject:@(i).stringValue];
 
         NSString *yText = [dict[@"value"] stringValue];
         [self.y_vls addObject:yText];
@@ -92,6 +89,34 @@
 
     [v startDrawWithLineType:WMChartLineTypeCurve];
 
+    WMWS(__self)
+    v.clickPoint = ^(NSInteger index) {
+        [__self clickPoint:index];
+    };
+
+}
+
+- (void)clickPoint:(NSInteger)index  {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    formatter.dateFormat = @"hh:mm:ss";
+
+    NSDictionary *dict = self.records[index];
+    NSDate *date =  dict[@"date"];
+    CGFloat value =  [dict[@"value"] floatValue];
+    NSString *d = [formatter stringFromDate:date];
+
+    NSString *title = [NSString stringWithFormat:@"%@", self.title];
+    NSString *info = [NSString stringWithFormat:@"%@ : %.2f%@", d, value, self.unit];
+
+    if (!pointLbl) {
+        pointLbl = [UILabel new];
+        pointLbl.numberOfLines = 1;
+        pointLbl.font = [UIFont systemFontOfSize:13];
+        pointLbl.frame = CGRectMake(72, 0, 200, 32);
+        [self.view addSubview:pointLbl];
+    }
+
+    pointLbl.text = [NSString stringWithFormat:@"%@:%@", title, info];
 }
 
 @end

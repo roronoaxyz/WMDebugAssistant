@@ -2,8 +2,8 @@
 //  UIView+WM.h
 //  bsbdj
 //
-//  Created by 邬志成 on 16/6/14.
-//  Copyright © 2016年 邬志成. All rights reserved.
+//  Created by thomas on 16/6/14.
+//  Copyright © 2017年 thomas. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

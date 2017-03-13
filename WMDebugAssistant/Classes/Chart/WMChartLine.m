@@ -2,8 +2,8 @@
 //  WMChartLine.m
 //  曲线-新算法
 //
-//  Created by 邬志成 on 16/7/20.
-//  Copyright © 2016年 邬志成. All rights reserved.
+//  Created by thomas on 16/7/20.
+//  Copyright © 2017年 thomas. All rights reserved.
 //
 
 #import "WMChartLine.h"
@@ -31,37 +31,37 @@
 
 @interface WMChartLine()
 //转换后的坐标点
-@property (strong,nonatomic) NSArray *coords_y_values;
+@property (strong,nonatomic) NSArray *coordsYvalues;
 
-@property (strong,nonatomic) NSArray *coords_x_values;
+@property (strong,nonatomic) NSArray *coordsXvalues;
 
 //固定Y坐标的区域
-@property (assign,nonatomic) UIView *y_coord_View;
+@property (assign,nonatomic) UIView *yCoordView;
 
 //绘图的区域
-@property (assign,nonatomic) WMChartView *draw_view;
+@property (assign,nonatomic) WMChartView *drawView;
 
 //缩放因子
-@property (assign,nonatomic) CGFloat scale_Value;
+@property (assign,nonatomic) CGFloat scaleValue;
 
 //X轴label的宽度
-@property (assign,nonatomic) CGFloat coords_x_label_width;
+@property (assign,nonatomic) CGFloat coordsXLabelWidth;
 
 
 /**
  *  各种距离
  */
-@property (assign,nonatomic) CGFloat offset_top;
+@property (assign,nonatomic) CGFloat offsetTop;
 
-@property (assign,nonatomic) CGFloat offset_bottom;
+@property (assign,nonatomic) CGFloat offsetBottom;
 
-@property (assign,nonatomic) CGFloat offset_left;
+@property (assign,nonatomic) CGFloat offsetLeft;
 
-@property (assign,nonatomic) CGFloat offset_right;
+@property (assign,nonatomic) CGFloat offsetRIght;
 
 @property (assign,nonatomic) CGFloat minY;
 
-@property (assign,nonatomic) CGFloat x_coord_location;
+@property (assign,nonatomic) CGFloat xCoordLocation;
 
 @end
 
@@ -89,11 +89,11 @@
     [self drawCoordindined_Y];
     [self drawCoordindined_X];
     [self swithYValues];
-    [self swithXValuesWithLabelWidth:_coords_x_label_width];
+    [self swithXValuesWithLabelWidth:_coordsXLabelWidth];
     if (lineType == WMChartLineTypeBroken) {
-        [self makePolyLineWithLabelWidth:_coords_x_label_width];
+        [self makePolyLineWithLabelWidth:_coordsXLabelWidth];
     }else{
-        [self makecurveWithLabelWidth:_coords_x_label_width];
+        [self makecurveWithLabelWidth:_coordsXLabelWidth];
     }
     [self addLegend];
 }
@@ -101,10 +101,10 @@
 - (void)setDefaultValue{
     
 #warning 这里修改到视图边距的值
-    self.offset_top = 40;
-    self.offset_left = 60;
-    self.offset_right = 10;
-    self.offset_bottom = 30;
+    self.offsetTop = 40;
+    self.offsetLeft = 60;
+    self.offsetRIght = 10;
+    self.offsetBottom = 30;
     
     /**************以下设置请勿更改****************/
     
@@ -123,9 +123,9 @@
     
     if (!isCustemY) {
         if (self.minY != 0) {
-            self.x_coord_location = self.minY;
+            self.xCoordLocation = self.minY;
         }else{
-            self.x_coord_location = 0;
+            self.xCoordLocation = 0;
         }
     }
     
@@ -134,18 +134,18 @@
 //画坐标系
 -(void)drawCoordindined_X{
     
-    WMChartView *chtView = [[WMChartView alloc]initWithFrame:CGRectMake(self.offset_left - Arrows_Size, 0, self.width - self.offset_right + Arrows_Size - self.offset_left, self.height)];
+    WMChartView *chtView = [[WMChartView alloc]initWithFrame:CGRectMake(self.offsetLeft - Arrows_Size, 0, self.width - self.offsetRIght + Arrows_Size - self.offsetLeft, self.height)];
     chtView.touch_delegate = self;
     //不允许弹跳效果
     chtView.bounces = NO;
-    _draw_view = chtView;
+    _drawView = chtView;
     //获取最大的label的尺寸
     CGSize max_label_size = [self getX_MaxLabelSize];
-    _coords_x_label_width = max_label_size.width;
+    _coordsXLabelWidth = max_label_size.width;
     //横坐标总长度
     CGFloat coord_x_lenth = (max_label_size.width + Coords_X_Lable_Space) * _x_values.count;
     //设置contentSize
-    _draw_view.contentSize = CGSizeMake(coord_x_lenth + self.offset_right, 0);
+    _drawView.contentSize = CGSizeMake(coord_x_lenth + self.offsetRIght, 0);
     
     UIBezierPath *coords_path = [UIBezierPath bezierPath];
     
@@ -153,12 +153,12 @@
     //x坐标最右端顶点x值
     CGFloat coord_x_right_value = coord_x_lenth ;
     //x坐标轴的Y值
-    CGFloat tmp_value = self.x_coord_location - self.minY;
-    tmp_value = self.frame.size.height - tmp_value * _scale_Value - self.offset_bottom;
+    CGFloat tmp_value = self.xCoordLocation - self.minY;
+    tmp_value = self.frame.size.height - tmp_value * _scaleValue - self.offsetBottom;
     CGFloat coord_x_custem_y_value = tmp_value;
     
     
-    CGFloat coord_x_yValue = _draw_view.height - self.offset_bottom;
+    CGFloat coord_x_yValue = _drawView.height - self.offsetBottom;
     //画横坐标坐标轴
     UIBezierPath *coord_x_path = [UIBezierPath bezierPath];
     
@@ -185,12 +185,12 @@
         
         //添加y坐标竖线的图层
         CAShapeLayer *coords_y_Verticlal_Line_layer = [[CAShapeLayer alloc]init];
-        coords_y_Verticlal_Line_layer.frame = _draw_view.bounds;
+        coords_y_Verticlal_Line_layer.frame = _drawView.bounds;
         coords_y_Verticlal_Line_layer.path = Coords_Y_Verticlal_Line_path.CGPath;
         coords_y_Verticlal_Line_layer.lineWidth = Coords_Y_Verticlal_Line_Width;
         coords_y_Verticlal_Line_layer.strokeColor = Coords_Y_Verticlal_Line_Color;
         coords_y_Verticlal_Line_layer.fillColor = [UIColor clearColor].CGColor;
-        [_draw_view.layer addSublayer:coords_y_Verticlal_Line_layer];
+        [_drawView.layer addSublayer:coords_y_Verticlal_Line_layer];
         
     }
     
@@ -198,7 +198,7 @@
     
     UIBezierPath *Coords_X_Verticlal_Line_path = [UIBezierPath bezierPath];
     CGFloat coords_max_y = coord_x_yValue;
-    CGFloat coords_min_y = coords_max_y - ([self getMaxYValue] - self.minY) * self.scale_Value;
+    CGFloat coords_min_y = coords_max_y - ([self getMaxYValue] - self.minY) * self.scaleValue;
     
     CGFloat label_CenterY = coord_x_custem_y_value + [self getLabelWidthWithStr:@"字符串" font:[UIFont systemFontOfSize:Coords_X_LableFont_Size]].height / 1.5;//标签的中心Y
     [_x_values enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
@@ -206,12 +206,12 @@
             CGFloat label_CenterX = ((float)idx + 0.5f) * (max_label_size.width + Coords_X_Lable_Space);
             UILabel *x_label_tmp = [[UILabel alloc]init];
             x_label_tmp.width = max_label_size.width;
-            x_label_tmp.height = self.offset_bottom;
+            x_label_tmp.height = self.offsetBottom;
             x_label_tmp.text = obj;
             x_label_tmp.center = CGPointMake(label_CenterX, label_CenterY);
             x_label_tmp.textAlignment = NSTextAlignmentCenter;
             x_label_tmp.font = [UIFont systemFontOfSize:Coords_X_LableFont_Size];
-            [_draw_view addSubview:x_label_tmp];
+            [_drawView addSubview:x_label_tmp];
             if(Show_Coords_X_Verticlal_Line){
                 UIBezierPath *coords_x_V_tmp = [UIBezierPath bezierPath];
                 [coords_x_V_tmp moveToPoint:CGPointMake(label_CenterX, coords_min_y)];
@@ -223,12 +223,12 @@
     if(Show_Coords_X_Verticlal_Line){
         //添加x坐标竖线的图层
         CAShapeLayer *coords_x_Verticlal_Line_layer = [[CAShapeLayer alloc]init];
-        coords_x_Verticlal_Line_layer.frame = _draw_view.bounds;
+        coords_x_Verticlal_Line_layer.frame = _drawView.bounds;
         coords_x_Verticlal_Line_layer.path = Coords_X_Verticlal_Line_path.CGPath;
         coords_x_Verticlal_Line_layer.lineWidth = Coords_X_Verticlal_Line_Width;
         coords_x_Verticlal_Line_layer.strokeColor = Coords_X_Verticlal_Line_Color;
         coords_x_Verticlal_Line_layer.fillColor = [UIColor clearColor].CGColor;
-        [_draw_view.layer addSublayer:coords_x_Verticlal_Line_layer];
+        [_drawView.layer addSublayer:coords_x_Verticlal_Line_layer];
     }
     
     //汇总path
@@ -239,13 +239,13 @@
     
     //添加坐标的图层
     CAShapeLayer *coords_layer = [[CAShapeLayer alloc]init];
-    coords_layer.frame = _draw_view.bounds;
+    coords_layer.frame = _drawView.bounds;
     coords_layer.path = coords_path.CGPath;
     coords_layer.lineWidth = 1.0f;
     coords_layer.strokeColor = Coords_lineColor;
     coords_layer.fillColor = [UIColor clearColor].CGColor;
-    [_draw_view.layer addSublayer:coords_layer];
-    [self addSubview:_draw_view];
+    [_drawView.layer addSublayer:coords_layer];
+    [self addSubview:_drawView];
     
 }
 
@@ -260,7 +260,7 @@
             Multiple = 100;
         }
     }
-    NSInteger maxTips = (self.height - self.offset_top - self.offset_bottom) / [self getLabelWidthWithStr:@"测试" font:[UIFont systemFontOfSize:Coords_Y_LableFont_Size]].height;
+    NSInteger maxTips = (self.height - self.offsetTop - self.offsetBottom) / [self getLabelWidthWithStr:@"测试" font:[UIFont systemFontOfSize:Coords_Y_LableFont_Size]].height;
     if (maxTips < 5) {
         return maxTips;
     }
@@ -300,26 +300,26 @@
     //步进值
     CGFloat step_value = (maxY_value / Coords_Y_Tip);
     
-    UIView *y_CoordView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.offset_left, self.height)];
-    _y_coord_View = y_CoordView;
+    UIView *y_CoordView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.offsetLeft, self.height)];
+    _yCoordView = y_CoordView;
     
-    _scale_Value = (_y_coord_View.height - self.offset_bottom - self.offset_top) * 1.0f / maxY_value;
+    _scaleValue = (_yCoordView.height - self.offsetBottom - self.offsetTop) * 1.0f / maxY_value;
     
     //绘制竖线
     
-    CGFloat coord_y_top = self.offset_top / 3.0f;
+    CGFloat coord_y_top = self.offsetTop / 3.0f;
     UIBezierPath *y_coord_path = [UIBezierPath bezierPath];
-    [y_coord_path moveToPoint:CGPointMake(_y_coord_View.width - Arrows_Size, coord_y_top)];
-    [y_coord_path addLineToPoint:CGPointMake(_y_coord_View.width - Arrows_Size, _y_coord_View.height - self.offset_bottom + 0.2)];
-    //    [y_coord_path addLineToPoint:CGPointMake(_y_coord_View.width, _y_coord_View.height - self.offset_bottom)];
+    [y_coord_path moveToPoint:CGPointMake(_yCoordView.width - Arrows_Size, coord_y_top)];
+    [y_coord_path addLineToPoint:CGPointMake(_yCoordView.width - Arrows_Size, _yCoordView.height - self.offsetBottom + 0.2)];
+    //    [y_coord_path addLineToPoint:CGPointMake(_yCoordView.width, _yCoordView.height - self.offsetBottom)];
     
     /**
      *  绘制箭头
      */
     UIBezierPath *arrows_path = [UIBezierPath bezierPath];
-    [arrows_path moveToPoint:CGPointMake(_y_coord_View.width - 2 * Arrows_Size, coord_y_top + Arrows_Height)];
-    [arrows_path addLineToPoint:CGPointMake(_y_coord_View.width - Arrows_Size, coord_y_top)];
-    [arrows_path addLineToPoint:CGPointMake(_y_coord_View.width, coord_y_top + Arrows_Height)];
+    [arrows_path moveToPoint:CGPointMake(_yCoordView.width - 2 * Arrows_Size, coord_y_top + Arrows_Height)];
+    [arrows_path addLineToPoint:CGPointMake(_yCoordView.width - Arrows_Size, coord_y_top)];
+    [arrows_path addLineToPoint:CGPointMake(_yCoordView.width, coord_y_top + Arrows_Height)];
     
     //绘制刻度
     
@@ -336,11 +336,11 @@
             
             if (step_value < Coords_Y_Tip) {
                 y_label_tmp.text = [NSString stringWithFormat:@"%.1f",(step_value * i + self.minY)];
-                y_value = _y_coord_View.height - ((step_value * i) * _scale_Value + self.offset_bottom);
+                y_value = _yCoordView.height - ((step_value * i) * _scaleValue + self.offsetBottom);
             }else{
                 
                 y_label_tmp.text = [NSString stringWithFormat:@"%0.1f",((step_value) * i + self.minY)];
-                y_value = _y_coord_View.height - (step_value * i * _scale_Value + self.offset_bottom);
+                y_value = _yCoordView.height - (step_value * i * _scaleValue + self.offsetBottom);
             }
             y_label_tmp.text = [y_label_tmp.text stringByAppendingString:self.y_unit];
             
@@ -350,8 +350,8 @@
             y_label_tmp.font = font;
             y_label_tmp.size = [self getLabelWidthWithStr:y_label_tmp.text font:font];
             y_label_tmp.height = Coords_Y_LableFont_Size;
-            y_label_tmp.center = CGPointMake(_y_coord_View.width - Arrows_Size * 2 - Coords_Y_Tip_Width - y_label_tmp.width / 2.0f, y_value);
-            [_y_coord_View addSubview:y_label_tmp];
+            y_label_tmp.center = CGPointMake(_yCoordView.width - Arrows_Size * 2 - Coords_Y_Tip_Width - y_label_tmp.width / 2.0f, y_value);
+            [_yCoordView addSubview:y_label_tmp];
             
             
             if (i == Coords_Y_Tip && !isShowZeroPoint && showZeroPoint) {
@@ -361,22 +361,22 @@
                 y_label_zero.text = [NSString stringWithFormat:@"%0.1f",0.0];
                 
                 CGFloat tmp_value = 0 - self.minY;
-                zero_value = self.frame.size.height - tmp_value * _scale_Value - self.offset_bottom;
+                zero_value = self.frame.size.height - tmp_value * _scaleValue - self.offsetBottom;
                 y_label_zero.font = font;
                 y_label_zero.size = [self getLabelWidthWithStr:y_label_zero.text font:font];
                 y_label_zero.height = Coords_Y_LableFont_Size;
-                y_label_zero.center = CGPointMake(_y_coord_View.width - Arrows_Size * 2 - Coords_Y_Tip_Width - y_label_zero.width / 2.0f, zero_value);
-                [_y_coord_View addSubview:y_label_zero];
+                y_label_zero.center = CGPointMake(_yCoordView.width - Arrows_Size * 2 - Coords_Y_Tip_Width - y_label_zero.width / 2.0f, zero_value);
+                [_yCoordView addSubview:y_label_zero];
                 
                 UIBezierPath *tmp_path = [UIBezierPath bezierPath];
-                [tmp_path moveToPoint:CGPointMake(_y_coord_View.width - Arrows_Size - Coords_Y_Tip_Width, zero_value)];
-                [tmp_path addLineToPoint:CGPointMake(_y_coord_View.width - Arrows_Size, zero_value)];
+                [tmp_path moveToPoint:CGPointMake(_yCoordView.width - Arrows_Size - Coords_Y_Tip_Width, zero_value)];
+                [tmp_path addLineToPoint:CGPointMake(_yCoordView.width - Arrows_Size, zero_value)];
                 [coords_steps appendPath:tmp_path];
                 
             }
             UIBezierPath *tmp_path = [UIBezierPath bezierPath];
-            [tmp_path moveToPoint:CGPointMake(_y_coord_View.width - Arrows_Size - Coords_Y_Tip_Width, y_value)];
-            [tmp_path addLineToPoint:CGPointMake(_y_coord_View.width - Arrows_Size, y_value)];
+            [tmp_path moveToPoint:CGPointMake(_yCoordView.width - Arrows_Size - Coords_Y_Tip_Width, y_value)];
+            [tmp_path addLineToPoint:CGPointMake(_yCoordView.width - Arrows_Size, y_value)];
             [tips_array addObject:@(y_value)];
             [coords_steps appendPath:tmp_path];
             
@@ -388,28 +388,28 @@
     [y_coord_path appendPath:coords_steps];
     //添加到图层
     CAShapeLayer *coordsLayer = [[CAShapeLayer alloc]init];
-    coordsLayer.frame = _y_coord_View.bounds;
+    coordsLayer.frame = _yCoordView.bounds;
     coordsLayer.path = y_coord_path.CGPath;
     coordsLayer.lineWidth = 1.0f;
     coordsLayer.strokeColor = Coords_lineColor;
     coordsLayer.fillColor = [UIColor clearColor].CGColor;
-    [_y_coord_View.layer addSublayer:coordsLayer];
-    [self addSubview:_y_coord_View];
+    [_yCoordView.layer addSublayer:coordsLayer];
+    [self addSubview:_yCoordView];
 }
 
 
 #pragma mark - 曲线与折线的算法
 //画曲线
 -(void)makecurveWithLabelWidth:(CGFloat)label_width{
-    for (int i = 0; i < _coords_y_values.count; i++) {
-        NSArray *values_arr = [_coords_y_values objectAtIndex:i];
+    for (int i = 0; i < _coordsYvalues.count; i++) {
+        NSArray *values_arr = [_coordsYvalues objectAtIndex:i];
         UIBezierPath *value_path = [UIBezierPath bezierPath];
         UIBezierPath *dots = [UIBezierPath bezierPath];
         NSMutableArray *points = [NSMutableArray array];
         [values_arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             @autoreleasepool {
                 
-                CGFloat path_x = [_coords_x_values[idx] floatValue];//((float)idx + 0.5f) * (label_width + Coords_X_Lable_Space);
+                CGFloat path_x = [_coordsXvalues[idx] floatValue];//((float)idx + 0.5f) * (label_width + Coords_X_Lable_Space);
                 
                 CGFloat path_y = [obj floatValue];
                 
@@ -423,33 +423,33 @@
         }];
         
         [value_path moveToPoint: [[points firstObject] CGPointValue]];
-        [value_path addBezierThroughPoints:points];
+        [value_path wm_addBezierThroughPoints:points];
         [value_path appendPath:dots];
         
         CAShapeLayer *value_layer = [[CAShapeLayer alloc]init];
-        value_layer.frame = _draw_view.bounds;
+        value_layer.frame = _drawView.bounds;
         value_layer.path = value_path.CGPath;
         value_layer.lineWidth = Coords_Values_Line_Width;
         value_layer.strokeColor = [self.colorsArray objectAtIndex:i].CGColor;
         value_layer.fillColor = [UIColor clearColor].CGColor;
         //动画
         [self addAnimationToLayer:value_layer];
-        [_draw_view.layer addSublayer:value_layer];
+        [_drawView.layer addSublayer:value_layer];
     }
 }
 
 
 //绘制折线图
 -(void)makePolyLineWithLabelWidth:(CGFloat)label_width{
-    for (int i = 0; i < _coords_y_values.count; i++) {
+    for (int i = 0; i < _coordsYvalues.count; i++) {
         @autoreleasepool {
             
-            NSArray *values_arr = [_coords_y_values objectAtIndex:i];
+            NSArray *values_arr = [_coordsYvalues objectAtIndex:i];
             UIBezierPath *value_path = [UIBezierPath bezierPath];
             UIBezierPath *dots = [UIBezierPath bezierPath];
             [values_arr enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
                 @autoreleasepool {
-                    CGFloat path_x = [_coords_x_values[idx] floatValue];;
+                    CGFloat path_x = [_coordsXvalues[idx] floatValue];;
                     CGFloat path_y = [obj floatValue];
                     //画点
                     UIBezierPath *dot = [UIBezierPath bezierPath];
@@ -466,14 +466,14 @@
             [value_path appendPath:dots];
             
             CAShapeLayer *value_layer = [[CAShapeLayer alloc]init];
-            value_layer.frame = _draw_view.bounds;
+            value_layer.frame = _drawView.bounds;
             value_layer.path = value_path.CGPath;
             value_layer.lineWidth = Coords_Values_Line_Width;
             value_layer.strokeColor = [self.colorsArray objectAtIndex:i].CGColor;
             value_layer.fillColor = [UIColor clearColor].CGColor;
             value_layer.lineJoin = kCALineCapRound;
             [self addAnimationToLayer:value_layer];
-            [_draw_view.layer addSublayer:value_layer];
+            [_drawView.layer addSublayer:value_layer];
             
         }
     }
@@ -493,7 +493,7 @@
     CGFloat offset_space = 3; //label的间距
     maxTitleSize.height += offset_space;
     CGFloat legend_with = 30.0f; //图例的宽度
-    CGFloat minLegendViewHeight = self.offset_top;//最小视图的高度
+    CGFloat minLegendViewHeight = self.offsetTop;//最小视图的高度
     CGFloat legend_W = maxTitleSize.width + legend_with + offset_space * 2;
     CGFloat legend_H = maxTitleSize.height * _y_titles.count;
     CGFloat legend_X = self.width - legend_W;
@@ -641,8 +641,8 @@
             label_size = size_tmp;
         }
     }
-    if (label_size.width < (_draw_view.width - self.offset_right - (_x_values.count * Coords_X_Lable_Space)) / (float)_x_values.count) {
-        label_size.width = (_draw_view.width - self.offset_right - (_x_values.count * Coords_X_Lable_Space)) / (float)_x_values.count;
+    if (label_size.width < (_drawView.width - self.offsetRIght - (_x_values.count * Coords_X_Lable_Space)) / (float)_x_values.count) {
+        label_size.width = (_drawView.width - self.offsetRIght - (_x_values.count * Coords_X_Lable_Space)) / (float)_x_values.count;
     }
     return label_size;
 }
@@ -657,7 +657,7 @@
         CGFloat tmp = ((float)idx + 0.5f) * (label_width + Coords_X_Lable_Space);
         [x_vls addObject:@(tmp)];
     }];
-    _coords_x_values = x_vls;
+    _coordsXvalues = x_vls;
 }
 /**
  *  转换y值,符合视图坐标
@@ -669,13 +669,13 @@
         [y_values_tmp enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
             @autoreleasepool {
                 CGFloat tmp_value = [obj floatValue] - self.minY;
-                tmp_value = self.frame.size.height - tmp_value * _scale_Value - self.offset_bottom;
+                tmp_value = self.frame.size.height - tmp_value * _scaleValue - self.offsetBottom;
                 [tmp_arr addObject:@(tmp_value)];
             }
         }];
         [arrays addObject:tmp_arr];
     }
-    _coords_y_values = arrays;
+    _coordsYvalues = arrays;
 }
 
 /**
@@ -747,7 +747,7 @@
     }
     _minY = minValue;
     if (isCustemY) {
-        [self setXCoordinatesLocationInYValue:_x_coord_location];
+        [self setXCoordinatesLocationInYValue:_xCoordLocation];
     }
 }
 
@@ -764,17 +764,17 @@
         yValue = [self getMaxYValue];
     }
     
-    _x_coord_location = yValue;
+    _xCoordLocation = yValue;
     
 }
 
 #pragma mark - 点击事件的代理方法(数值显示)
--(void)WMChartViewTouchPoint:(CGPoint)point{
+-(void)chartViewTouchPoint:(CGPoint)point{
     
-    CGFloat x_touch_space = _coords_x_label_width / 2.0f;
+    CGFloat x_touch_space = _coordsXLabelWidth / 2.0f;
     __block NSInteger x_idx = -1;
     __block NSInteger y_idx = -1;
-    [_coords_x_values enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+    [_coordsXvalues enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         
         CGFloat x_vls = [obj floatValue];
         CGFloat distance = MAX(x_vls, point.x) - MIN(x_vls, point.x);//ABS(x_vls - point.x);
@@ -784,9 +784,9 @@
     }];
     
     __block CGFloat distance = MAXFLOAT;
-    for (int i = 0; i < _coords_y_values.count; i ++) {
+    for (int i = 0; i < _coordsYvalues.count; i ++) {
         
-        NSArray *y_vls = _coords_y_values[i];
+        NSArray *y_vls = _coordsYvalues[i];
         
         if (y_vls.count - 1 >= x_idx && x_idx != -1) {
             CGFloat dis = ABS_VALUE(point.y,[y_vls[x_idx] floatValue]);
@@ -799,24 +799,13 @@
     if (y_idx < 0 || x_idx<0) {
         return;
     }
-    NSMutableString *info = [NSMutableString string];
-    NSString *valueStr = _y_values[y_idx][x_idx];
-    for (int i = 0 ; i < _y_values.count; i ++) {
-        if ([_y_values[i][x_idx] isEqualToString:valueStr]) {
-            if (![info isEqualToString:@""]) {
-                [info appendString:@"\n"];
-            }
-            if (_y_titles.count > i) {
-                [info appendString:_y_titles[i]];
-                [info appendString:@"\n"];
-            }
-            [info appendString:[NSString stringWithFormat:@"%@:%@",_x_values[x_idx],_y_values[i][x_idx]]];
-        }
+
+    if (self.clickPoint) {
+        self.clickPoint(x_idx);
     }
-    
-    CGPoint showPoint = CGPointMake([_coords_x_values[x_idx] floatValue], [_coords_y_values[y_idx][x_idx] floatValue]);
+
 //    PopoverView *popView = [PopoverView new];
-//    [popView showAtPoint:showPoint inView:_draw_view withText:info];
+//    [popView showAtPoint:showPoint inView:_drawView withText:info];
 
 }
 
