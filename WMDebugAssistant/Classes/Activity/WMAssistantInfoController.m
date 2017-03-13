@@ -112,7 +112,7 @@
         pointLbl = [UILabel new];
         pointLbl.numberOfLines = 1;
         pointLbl.font = [UIFont systemFontOfSize:13];
-        pointLbl.frame = CGRectMake(72, 0, 200, 32);
+        pointLbl.frame = CGRectMake(72, 0, 240, 32);
         [self.view addSubview:pointLbl];
     }
 

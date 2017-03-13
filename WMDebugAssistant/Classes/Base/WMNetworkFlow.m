@@ -111,7 +111,7 @@
         uint32_t nowRecived = (self.kWiFiReceived + self.kWWANReceived - self.historyRecived);
 
         //记录
-        [self.records addObject:@{@"date":[NSDate date], @"value":@(nowRecived)}];
+        [self.records addObject:@{@"date":[NSDate date], @"value":@(nowRecived / 1024.0f)}];
 
         //记录10分钟
         if (self.records.count > 600) {
