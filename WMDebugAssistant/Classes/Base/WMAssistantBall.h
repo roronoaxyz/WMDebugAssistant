@@ -26,6 +26,9 @@
 - (UIButton *)buttonOfTitle:(NSString *)title;
 
 //生成一张报表 类型   1 cpu ;2 内存 ; 3 网速
-- (UIViewController *)makeChart:(NSInteger)flag;
+- (void)makeChart:(NSInteger)flag pCtrl:(UIViewController *)pCtrl;
 
+@end
+
+@interface UIViewController (WMAssistantBall)
 @end

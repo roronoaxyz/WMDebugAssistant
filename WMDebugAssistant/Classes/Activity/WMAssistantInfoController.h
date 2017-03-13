@@ -12,6 +12,7 @@
 @interface WMAssistantInfoController : UIViewController
 
 @property (nonatomic, strong) NSString *title;            //标题名字
-@property (nonatomic, strong) NSArray *records;
+@property (nonatomic, strong) NSString *unit;            //单位
+@property (nonatomic, strong) NSArray *records;     //记录
 
 @end

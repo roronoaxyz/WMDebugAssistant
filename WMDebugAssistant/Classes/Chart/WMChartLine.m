@@ -342,6 +342,7 @@
                 y_label_tmp.text = [NSString stringWithFormat:@"%0.1f",((step_value) * i + self.minY)];
                 y_value = _y_coord_View.height - (step_value * i * _scale_Value + self.offset_bottom);
             }
+            y_label_tmp.text = [y_label_tmp.text stringByAppendingString:self.y_unit];
             
             if (!isShowZeroPoint) {
                 isShowZeroPoint = step_value * i == 0 ? YES:NO;

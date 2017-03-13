@@ -23,6 +23,8 @@ typedef enum : NSInteger {
 @property (nonnull,strong,nonatomic) NSArray<NSArray<NSString*> * > *y_values;
 /* 折线的名称/类别 (有几条直线就有几个名字,默认无) */
 @property (nonnull,strong,nonatomic) NSArray<NSString*> *y_titles;
+/* 折线的名称/类别 的单位 */
+@property (nonnull,strong,nonatomic) NSString *y_unit;
 /* 折线的颜色数组(默认随机方法) */
 @property (nonnull,strong,nonatomic) NSArray<UIColor *> *colorsArray;
 

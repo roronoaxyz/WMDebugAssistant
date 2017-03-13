@@ -28,6 +28,11 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = YES;
 
+    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, 160, 140)];
+    lbl.text = @"12370123701237012370123701237012370123701237012370123701237012370";
+    [self.view addSubview:lbl];
+
+
 
 //@property (strong, nonatomic) WMAssistantBall *assistantBall;
     self.assistantBall = [[WMAssistantBall alloc] init];//一定要作为一个局部属性
@@ -47,23 +52,14 @@
 
 - (void)doSelect:(NSString *)title {
     if ([title isEqualToString:@"CPU"]) {
-        UIViewController *ctrl = [self.assistantBall makeChart:1];
-        [self.navigationController pushViewController:ctrl animated:YES];
+        [self.assistantBall makeChart:1 pCtrl:self];
     }
     else if ([title isEqualToString:@"内存"]) {
-        UIViewController *ctrl = [self.assistantBall makeChart:2];
-        [self.navigationController pushViewController:ctrl animated:YES];
+        [self.assistantBall makeChart:2 pCtrl:self];
     }
     else if ([title isEqualToString:@"流量"]) {
-        UIViewController *ctrl = [self.assistantBall makeChart:3];
-        [self.navigationController pushViewController:ctrl animated:YES];
+        [self.assistantBall makeChart:3 pCtrl:self];
     }
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 @end

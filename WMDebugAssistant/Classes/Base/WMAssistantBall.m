@@ -13,6 +13,7 @@
 #import "WMNetworkFlow.h"           //流量
 #import "WMFpsHelper.h"            //fps
 #import "WMAssistantController.h"       //空界面  window 用
+#import "WMAssistantNavigationController.h" //导航条 横屏
 #import "WMAssistantInfoController.h"           //报表界面
 
 
@@ -580,25 +581,27 @@
     return nil;
 }
 
-//生成一张报表 类型   1 cpu ;2 内存 ; 3 网速 ; 
-- (UIViewController *)makeChart:(NSInteger)flag {
+//生成一张报表 类型   1 cpu ;2 内存 ; 3 网速
+- (void)makeChart:(NSInteger)flag pCtrl:(UIViewController *)pCtrl {
     WMAssistantInfoController *aCtrl = [[WMAssistantInfoController alloc] init];
     if (flag == 1) {
         aCtrl.title = @"CPU";
         aCtrl.records = [self.cpuHelper getRecords];
+        aCtrl.unit = @"%";
     }
     else if (flag == 2) {
         aCtrl.title = @"内存";
         aCtrl.records = [self.memHelper getRecords];
+        aCtrl.unit = @"MB";
     }
     else if (flag == 3) {
         aCtrl.title = @"流量";
         aCtrl.records = [self.networkFlow getRecords];
+        aCtrl.unit = @"kb/s";
     }
-
-
-
-    return aCtrl;
+    //
+    WMAssistantNavigationController *nCtrl = [[WMAssistantNavigationController alloc] initWithRootViewController:aCtrl];
+    [pCtrl presentViewController:nCtrl animated:YES completion:nil];
 }
 
 #pragma mark  ------- 设备旋转 -----------
