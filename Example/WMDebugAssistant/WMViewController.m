@@ -29,7 +29,7 @@
     self.automaticallyAdjustsScrollViewInsets = YES;
 
     UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, 160, 140)];
-    lbl.text = @"12370123701237012370123701237012370123701237012370123701237012370";
+    lbl.text = @"wait";
     [self.view addSubview:lbl];
 
 
