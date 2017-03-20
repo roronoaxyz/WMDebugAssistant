@@ -24,29 +24,35 @@
     return img;
 }
 
-//绘制带圆角的image
-- (UIImage *)wm_roundedImage:(CGFloat)radius size:(CGSize)size {
-    CGFloat scale = self.scale;
-    UIGraphicsBeginImageContextWithOptions(size, NO, scale);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGRect imageRect = (CGRect){0,0,size};
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:imageRect cornerRadius:radius];
-    CGContextAddPath(context, path.CGPath);
-    CGContextEOClip(context);
-    [self drawInRect:imageRect];
-    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return result;
-
-}
-
-- (UIImage *)wm_roundCorner:(CGFloat)radius {
-    return [self wm_roundedImage:radius size:self.size];
-}
-
 /** 变圆 */
 - (UIImage *)wm_roundCorner {
-    return [self wm_roundedImage:self.size.width size:self.size];
+    CGFloat width =self.size.width;
+    CGFloat height =self.size.height;
+    CGFloat cornerRadius;
+    UIBezierPath*maskShape;
+    if(width > height) {
+        cornerRadius = height / 2.0;
+        maskShape = [UIBezierPath bezierPathWithRoundedRect:CGRectMake((width-height)/2.0,0, height, height) cornerRadius:cornerRadius];
+    }else{
+        cornerRadius = width / 2.0;
+        maskShape = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, (height-width)/2.0, width-2, width) cornerRadius:cornerRadius];
+    }
+
+    UIGraphicsBeginImageContextWithOptions(self.size,NO, [UIScreen mainScreen].scale);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    CGContextSaveGState(ctx);
+    CGContextAddPath(ctx, maskShape.CGPath);
+    CGContextClip(ctx);
+
+    CGContextTranslateCTM(ctx,0, height);
+    CGContextScaleCTM(ctx,1.0,-1.0);
+    CGContextDrawImage(ctx,CGRectMake(0,0, width, height),self.CGImage);
+    CGContextRestoreGState(ctx);
+
+    UIImage*resultingImage =UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return resultingImage;
 }
 
 @end

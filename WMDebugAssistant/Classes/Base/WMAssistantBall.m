@@ -86,8 +86,8 @@
     }
 
     UIImage *nImage = [UIImage wm_imageWithColor:self.ballColor withFrame:CGRectMake(0, 0, self.bWidth, self.bWidth)];
-    nImage = [nImage wm_roundCorner];
-    
+//    nImage = [nImage wm_roundCorner];
+
     self.mainImageButton =  [UIButton buttonWithType:UIButtonTypeCustom];
     [self.mainImageButton setFrame:(CGRect){0, 0, self.bWidth, self.bWidth}];
     [self.mainImageButton setImage:nImage forState:UIControlStateNormal];
@@ -98,6 +98,8 @@
 //    [self.mainImageButton setImage:hImage forState:UIControlStateHighlighted];
     [self.mainImageButton addTarget:self action:@selector(doTap:) forControlEvents:UIControlEventTouchUpInside];
     [self.mainImageButton addTarget:self action:@selector(mainBtnTouchDown) forControlEvents:UIControlEventTouchDown];
+    self.mainImageButton.layer.masksToBounds = YES;
+    self.mainImageButton.layer.cornerRadius = self.bWidth / 2;
     
     [self addSubview:self.mainImageButton];
 }

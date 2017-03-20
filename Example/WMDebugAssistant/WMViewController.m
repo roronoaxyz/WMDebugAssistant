@@ -28,11 +28,6 @@
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = YES;
 
-    UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(30, 30, 160, 140)];
-    lbl.text = @"wait";
-    [self.view addSubview:lbl];
-
-
 
 //@property (strong, nonatomic) WMAssistantBall *assistantBall;
     self.assistantBall = [[WMAssistantBall alloc] init];//一定要作为一个局部属性
@@ -60,6 +55,22 @@
     else if ([title isEqualToString:@"流量"]) {
         [self.assistantBall makeChart:3 pCtrl:self];
     }
+}
+
+- (void)requestURL {
+    NSURL *url = [NSURL URLWithString:@"http://upload.ct.youth.cn/2014/1219/1418933895342.jpg"];
+    NSURLRequest *reque = [NSURLRequest requestWithURL:url];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
+    NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:reque completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        NSLog(@"%@", location);
+        NSLog(@"home :%@", NSHomeDirectory());
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIImageView *imageview = [[UIImageView alloc]initWithFrame:self.view.bounds];
+            imageview.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
+            [self.view addSubview:imageview];
+        });
+    }];
+    [task resume];
 }
 
 @end
