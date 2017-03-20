@@ -1,9 +1,5 @@
 # WMDebugAssistant
-
-[![CI Status](http://img.shields.io/travis/Thomas/WMDebugAssistant.svg?style=flat)](https://travis-ci.org/Thomas/WMDebugAssistant)
-[![Version](https://img.shields.io/cocoapods/v/WMDebugAssistant.svg?style=flat)](http://cocoapods.org/pods/WMDebugAssistant)
-[![License](https://img.shields.io/cocoapods/l/WMDebugAssistant.svg?style=flat)](http://cocoapods.org/pods/WMDebugAssistant)
-[![Platform](https://img.shields.io/cocoapods/p/WMDebugAssistant.svg?style=flat)](http://cocoapods.org/pods/WMDebugAssistant)
+ ![image](https://github.com/roronoaxyz/WMDebugAssistant/blob/master/Example/Shot/assistant.gif)
 
 ## 作用
     在自己的应用中，实时监测CPU，内存，网络下载，fps的状态，帮助开发定位。
@@ -14,6 +10,9 @@
 
 ## pod使用
 pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.git", :tag => '0.1.2'
+
+
+悬浮球 添加在第一个界面生成后  因为它本身是个 UIWindow
 
 ## iOS代码
     @property (strong, nonatomic) WMAssistantBall *assistantBall;
@@ -28,6 +27,9 @@ pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.gi
     self.assistantBall.selectBlock = ^(NSString *title, UIButton *button) {
         NSLog(@"%@", title);
     };
+    
+    //历史数据曲线图
+    [self.assistantBall makeChart:1 pCtrl:self];
 
 ## Author
 
