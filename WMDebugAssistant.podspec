@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'WMDebugAssistant'
-  s.version          = '0.1.4'
+  s.version          = '0.1.5'
   s.summary          = 'cpu,memory,network,fps oberver'
 
 # This description is used to generate tags and improve search results.
