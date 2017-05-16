@@ -40,7 +40,7 @@
     self.netBlock = nil;
 }
 /** 获取 流量 记录 **/
-- (NSDictionary *)getRecords {
+- (NSArray *)getRecords {
     return self.records;
 }
 
@@ -57,6 +57,11 @@
 - (void)stop {
     [self.timer invalidate];
     self.timer = nil;
+}
+
+/** 是否激活中 **/
+- (BOOL)isActived {
+    return self.timer != nil;
 }
 
 /** 流量消耗状态 **/

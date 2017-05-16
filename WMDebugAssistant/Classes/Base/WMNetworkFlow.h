@@ -18,7 +18,10 @@
 @property (nonatomic, assign) u_int32_t kWWANReceived;
 
 /** 获取 流量 记录 **/
-- (NSDictionary *)getRecords;
+- (NSArray *)getRecords;
+
+/** 是否激活中 **/
+- (BOOL)isActived;
 
 /** 开始监听**/
 - (void)startblock:(void (^)(u_int32_t sendFlow, u_int32_t receivedFlow))block;

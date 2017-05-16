@@ -15,7 +15,10 @@
 + (CGFloat)getCpuUsage;
 
 /** 获取 cpu 记录 **/
-- (NSDictionary *)getRecords;
+- (NSArray *)getRecords;
+
+/** 是否激活中 **/
+- (BOOL)isActived;
 
 /** 开始监听**/
 - (void)startblock:(void (^)(CGFloat cpuUsage))block;

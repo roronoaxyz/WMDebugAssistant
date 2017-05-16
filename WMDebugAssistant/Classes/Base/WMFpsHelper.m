@@ -32,6 +32,11 @@
     [self stop];
 }
 
+/** 是否激活中 **/
+- (BOOL)isActived {
+    return self.displayLink != nil;
+}
+
 - (void)handleDisplayLink:(CADisplayLink *)displayLink
 {
     if (lastTime == 0) {

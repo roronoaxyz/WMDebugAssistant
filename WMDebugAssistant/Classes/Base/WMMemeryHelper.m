@@ -42,6 +42,11 @@
     self.timer = nil;
 }
 
+/** 是否激活中 **/
+- (BOOL)isActived {
+    return self.timer != nil;
+}
+
 /**  **/
 - (void)getMemUsage {
     CGFloat u = [WMMemeryHelper getUsedMemory];
@@ -58,7 +63,7 @@
 }
 
 /** 获取 内存 记录 **/
-- (NSDictionary *)getRecords {
+- (NSArray *)getRecords {
     return self.records;
 }
 

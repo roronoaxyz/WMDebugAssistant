@@ -57,20 +57,4 @@
     }
 }
 
-- (void)requestURL {
-    NSURL *url = [NSURL URLWithString:@"http://upload.ct.youth.cn/2014/1219/1418933895342.jpg"];
-    NSURLRequest *reque = [NSURLRequest requestWithURL:url];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:[NSURLSessionConfiguration ephemeralSessionConfiguration]];
-    NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:reque completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-        NSLog(@"%@", location);
-        NSLog(@"home :%@", NSHomeDirectory());
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIImageView *imageview = [[UIImageView alloc]initWithFrame:self.view.bounds];
-            imageview.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:location]];
-            [self.view addSubview:imageview];
-        });
-    }];
-    [task resume];
-}
-
 @end

@@ -280,32 +280,24 @@
 #pragma mark  ------- cpu ----------
 - (void)loadCpu {
     //
-    WMWS(__self)
     self.cpuHelper = [[WMCpuHelper alloc] init];
-    [self.cpuHelper startblock:^(CGFloat cpuUsage) {
-        [__self doDisplayCpu:cpuUsage];
-    }];
 }
 
 - (void)doDisplayCpu:(CGFloat)cpuUsage {
-    NSString *cpuString = [NSString stringWithFormat:@"%.2f%%", cpuUsage];
     UIButton *cpuBUtton = [self.contentView viewWithTag:0x999];
+    NSString *cpuString = [NSString stringWithFormat:@"%.2f%%", cpuUsage];
     [cpuBUtton setTitle:cpuString forState:UIControlStateNormal];
 }
 
 #pragma mark  ------- 内存 ----------
 - (void)loadMemery {
     //
-    WMWS(__self)
     self.memHelper = [[WMMemeryHelper alloc] init];
-    [self.memHelper startblock:^(CGFloat usedMemory) {
-        [__self doDisplayMemory:usedMemory];
-    }];
 }
 
 - (void)doDisplayMemory:(CGFloat)usedMemory {
-    NSString *memString = [NSString stringWithFormat:@"%.2fMB", usedMemory];
     UIButton *memeryButton = [self.contentView viewWithTag:0x999 + 1];
+    NSString *memString = [NSString stringWithFormat:@"%.2fMB", usedMemory];
     [memeryButton setTitle:memString forState:UIControlStateNormal];
 }
 
@@ -313,11 +305,7 @@
 #pragma mark  ------- 网速 ----------
 - (void)loadFlow {
     //
-    WMWS(__self)
     self.networkFlow = [[WMNetworkFlow alloc] init];
-    [self.networkFlow startblock:^(u_int32_t sendFlow, u_int32_t receivedFlow) {
-        [__self doDisplayNet:sendFlow receivedFlow:receivedFlow];
-    }];
 }
 
 - (void)doDisplayNet:(u_int32_t)sendFlow receivedFlow:(u_int32_t)receivedFlow {
@@ -329,18 +317,14 @@
 #pragma mark  ------- fps ----------
 - (void)loadFps {
     //
-    WMWS(__self)
     self.fpsHelper = [[WMFpsHelper alloc] init];
-    [self.fpsHelper startblock:^(CGFloat fps) {
-        [__self doDisplayfps:fps];
-    }];
 }
 
 - (void)doDisplayfps:(CGFloat)fps {
     UIButton *fpsButton = [self.contentView viewWithTag:0x999 + 3];
-    
     NSString *fpsString = [NSString stringWithFormat:@"%.0ffps", fps];
     [fpsButton setTitle:fpsString forState:UIControlStateNormal];
+
 }
 
 #pragma mark  ------- 按钮 ----------
@@ -355,7 +339,8 @@
     [bbb setTitle:title forState:UIControlStateNormal];
     bbb.titleLabel.font = [UIFont systemFontOfSize:12];
     bbb.titleLabel.adjustsFontSizeToFitWidth = YES;
-    [bbb addTarget:self action:@selector(itemsClick:) forControlEvents:UIControlEventTouchUpInside];
+    [bbb addTarget:self action:@selector(itemsClick:) forControlEvents:UIControlEventTouchUpInside];// 点击操作
+
     if (image) {
         [bbb setImage:image forState:UIControlStateNormal];
         [bbb wm_titleUnderIcon:5];
@@ -393,18 +378,61 @@
 }
 
 //点击事件
-- (void)itemsClick:(id)sender{
-    if (self.isShowTab){
-        [self doTap:nil];
-    }
+- (void)itemsClick:(id)sender {
 
     UIButton *button = (UIButton *)sender;
     NSInteger t = button.tag - 0x999;
 
     NSString *title = self.itemArray[t];
-    if (self.selectBlock) {
-        self.selectBlock(title, button);
+    BOOL flag = YES;
+
+    WMWS(__self)
+
+    if ([title isEqualToString:@"CPU"]) {
+        if (![self.cpuHelper isActived]) {
+            flag = NO;
+            [self.cpuHelper startblock:^(CGFloat cpuUsage) {
+                [__self doDisplayCpu:cpuUsage];
+            }];
+        }
     }
+    else if ([title isEqualToString:@"内存"]) {
+        if (![self.memHelper isActived]) {
+            flag = NO;
+            [self.memHelper startblock:^(CGFloat usedMemory) {
+                [__self doDisplayMemory:usedMemory];
+            }];
+        }
+
+    }
+    else if ([title isEqualToString:@"流量"]) {
+        if (![self.networkFlow isActived]) {
+            flag = NO;
+            [self.networkFlow startblock:^(u_int32_t sendFlow, u_int32_t receivedFlow) {
+                [__self doDisplayNet:sendFlow receivedFlow:receivedFlow];
+            }];
+        }
+
+    }
+    else if ([title isEqualToString:@"FPS"]) {
+        if (![self.fpsHelper isActived]) {
+            flag = NO;
+            [self.fpsHelper startblock:^(CGFloat fps) {
+                [__self doDisplayfps:fps];
+            }];
+        }
+    }
+
+    if (flag) {
+        if (self.isShowTab){
+            [self doTap:nil];
+        }
+
+        if (self.selectBlock) {
+            self.selectBlock(title, button);
+        }
+    }
+
 }
 
 #pragma mark  ------- 绘图操作 ----------

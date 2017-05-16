@@ -12,6 +12,9 @@
 /** fps **/
 @interface WMFpsHelper : NSObject
 
+/** 是否激活中 **/
+- (BOOL)isActived;
+
 /** 开始监听 **/
 - (void)startblock:(void (^)(CGFloat fps))block;
 - (void)stop;
