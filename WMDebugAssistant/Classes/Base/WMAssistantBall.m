@@ -631,8 +631,12 @@
     //描边
     [self doBorderWidth];
 
+    //如果是调试模式 就开启 否则关闭
+#ifdef DEBUG
     //开启功能
     [self doOther:nil];
+
+#endif
 }
 
 /** 通过标题获取按钮 默认的4个是 @"CPU",@"内存", @"流量",@"FPS" **/
