@@ -19,9 +19,10 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetFillColorWithColor(context, [aColor CGColor]);
     CGContextFillRect(context, aFrame);
-    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *resultImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return img;
+
+    return resultImage;
 }
 
 /** 变圆 */
@@ -29,30 +30,20 @@
     CGFloat width =self.size.width;
     CGFloat height =self.size.height;
     CGFloat cornerRadius;
-    UIBezierPath*maskShape;
     if(width > height) {
         cornerRadius = height / 2.0;
-        maskShape = [UIBezierPath bezierPathWithRoundedRect:CGRectMake((width-height)/2.0,0, height, height) cornerRadius:cornerRadius];
     }else{
         cornerRadius = width / 2.0;
-        maskShape = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, (height-width)/2.0, width-2, width) cornerRadius:cornerRadius];
     }
 
-    UIGraphicsBeginImageContextWithOptions(self.size,NO, [UIScreen mainScreen].scale);
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-
-    CGContextSaveGState(ctx);
-    CGContextAddPath(ctx, maskShape.CGPath);
-    CGContextClip(ctx);
-
-    CGContextTranslateCTM(ctx,0, height);
-    CGContextScaleCTM(ctx,1.0,-1.0);
-    CGContextDrawImage(ctx,CGRectMake(0,0, width, height),self.CGImage);
-    CGContextRestoreGState(ctx);
-
-    UIImage*resultingImage =UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *original = self;
+    CGRect frame = CGRectMake(0, 0, original.size.width, original.size.height);
+    UIGraphicsBeginImageContextWithOptions(original.size, NO, 1.0);
+    [[UIBezierPath bezierPathWithRoundedRect:frame cornerRadius:cornerRadius] addClip];
+    [original drawInRect:frame];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return resultingImage;
+    return image;
 }
 
 @end
