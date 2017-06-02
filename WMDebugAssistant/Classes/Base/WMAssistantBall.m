@@ -380,7 +380,7 @@
 
 - (void)doDisplayNet:(u_int32_t)sendFlow receivedFlow:(u_int32_t)receivedFlow {
     UIButton *flowButton = [self.contentView viewWithTag:0x999 + 2];
-    NSString *flowString = [NSString stringWithFormat:@"%.2fkb/s", receivedFlow / 1024.0f];
+    NSString *flowString = [NSString stringWithFormat:@"%.2f MB", receivedFlow /1024.0f / 1024.0f];
     [flowButton setTitle:flowString forState:UIControlStateNormal];
 }
 
@@ -665,7 +665,7 @@
     else if (flag == 3) {
         aCtrl.title = @"流量";
         aCtrl.records = [self.networkFlow getRecords];
-        aCtrl.unit = @"kb/s";
+        aCtrl.unit = @"MB";
     }
     //
     WMAssistantNavigationController *nCtrl = [[WMAssistantNavigationController alloc] initWithRootViewController:aCtrl];

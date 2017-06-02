@@ -110,13 +110,16 @@
     //第一次不统计
     if (self.isFirst) {
         self.isFirst = NO;
+
+        self.historySent = self.kWiFiSent + self.kWWANSent;
+        self.historyRecived = self.kWiFiReceived + self.kWWANReceived;
     }
     else {
         uint32_t nowSent = (self.kWiFiSent + self.kWWANSent - self.historySent);
         uint32_t nowRecived = (self.kWiFiReceived + self.kWWANReceived - self.historyRecived);
 
         //记录
-        [self.records addObject:@{@"date":[NSDate date], @"value":@(nowRecived / 1024.0f)}];
+        [self.records addObject:@{@"date":[NSDate date], @"value":@(nowRecived / 1024.0f / 1024.0f)}];
 
         //记录10分钟
         if (self.records.count > 600) {
@@ -127,9 +130,6 @@
             self.netBlock(nowSent, nowRecived);
         }
     }
-
-    self.historySent = self.kWiFiSent + self.kWWANSent;
-    self.historyRecived = self.kWiFiReceived + self.kWWANReceived;
 }
 
 @end
