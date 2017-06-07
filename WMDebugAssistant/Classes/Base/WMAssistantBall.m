@@ -34,7 +34,6 @@
 @property (nonatomic, strong) UITapGestureRecognizer *tap;//点击
 @property (nonatomic, strong) UIButton *mainImageButton;    //点击的小球
 @property (nonatomic, strong) UIView *contentView;
-@property (nonatomic, strong) UIButton *otherButton;    //额外的按钮 用来控制功能显示
 @property (nonatomic, strong) CAAnimationGroup *animationGroup;
 @property (nonatomic, strong) CAShapeLayer *circleShape;
 
@@ -112,17 +111,6 @@
 }
 
 #pragma mark  ------- 附属按钮 ----------
-- (void)loadOtherButton {
-    UIImage *nImage = [UIImage wm_imageWithColor:[UIColor blackColor] withFrame:CGRectMake(0, 0, 18, 18)];
-    nImage = [nImage wm_roundCorner];
-
-    self.otherButton =  [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.otherButton setFrame:(CGRect){0, 0, self.bWidth, self.bWidth}];
-    [self.otherButton setImage:nImage forState:UIControlStateNormal];
-    [self.otherButton addTarget:self action:@selector(doOther:) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.otherButton];
-}
-
 
 - (void)doOther:(id)sender {
     WMWS(__self)
@@ -301,14 +289,12 @@
             if (thisX <= kWMWindowWidth/2) {
                 self.frame = CGRectMake(thisX, thisY, sWidth, sHeight);
                 self.contentView.frame = (CGRect){iWidth, 0, sWidth - iWidth, sHeight};
-                self.otherButton.frame = (CGRect){0, self.bWidth , self.bWidth, self.bWidth};
             }else{
                 CGFloat sLeft = thisX  - kWMBallCount * iWidth;
 
                 self.frame = CGRectMake(sLeft, thisY,  sWidth, sHeight);
                 self.mainImageButton.frame = CGRectMake((kWMBallCount * iWidth), 0, self.bWidth, self.bWidth);
                 self.contentView.frame = (CGRect){10.0f, 0 , sWidth - self.bWidth, sHeight};
-                self.otherButton.frame = (CGRect){sWidth - self.bWidth, self.bWidth , self.bWidth, self.bWidth};
             }
             self.backgroundColor = [UIColor colorWithRed:0x33/255.0f green:0x33/255.0f blue:0x33/255.0f alpha:0.5];
         }];
@@ -604,9 +590,6 @@
     //内容
     [self loadContentView];
 
-    //辅助按钮
-    [self loadOtherButton];
-
     //主按钮
     [self loadMainButton];
 
@@ -631,12 +614,8 @@
     //描边
     [self doBorderWidth];
 
-    //如果是调试模式 就开启 否则关闭
-#ifdef DEBUG
     //开启功能
     [self doOther:nil];
-
-#endif
 }
 
 /** 通过标题获取按钮 默认的4个是 @"CPU",@"内存", @"流量",@"FPS" **/
