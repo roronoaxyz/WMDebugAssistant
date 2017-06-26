@@ -18,7 +18,8 @@
 @property (assign,nonatomic) uint32_t historyRecived;
 @property (assign,nonatomic) BOOL     isFirst;
 
-@property (nonatomic, strong) NSMutableArray *records;
+@property (nonatomic, strong) NSMutableArray *upFlows;
+@property (nonatomic, strong) NSMutableArray *downFlows;
 @property (nonatomic, strong)NSTimer *timer;
 
 @end
@@ -39,14 +40,23 @@
 
     self.netBlock = nil;
 }
-/** 获取 流量 记录 **/
-- (NSArray *)getRecords {
-    return self.records;
+/** 获取 下载 记录 **/
+- (NSArray *)getDownFlow {
+    return self.downFlows;
+}
+
+/** 获取 上传 记录 **/
+- (NSArray *)getUpFlow {
+    return self.upFlows;
+
 }
 
 - (void)startblock:(void (^)(u_int32_t sendFlow, u_int32_t receivedFlow))block {
-    if (!self.records) {
-        self.records = [NSMutableArray new];
+    if (!self.upFlows) {
+        self.upFlows = [NSMutableArray new];
+    }
+    if (!self.downFlows) {
+        self.downFlows = [NSMutableArray new];
     }
     
     self.netBlock = block;
@@ -119,11 +129,17 @@
         uint32_t nowRecived = (self.kWiFiReceived + self.kWWANReceived - self.historyRecived);
 
         //记录
-        [self.records addObject:@{@"date":[NSDate date], @"value":@(nowRecived / 1024.0f / 1024.0f)}];
+        [self.upFlows addObject:@{@"date":[NSDate date], @"value":@(nowSent / 1024.0f / 1024.0f)}];
+        [self.downFlows addObject:@{@"date":[NSDate date], @"value":@(nowRecived / 1024.0f / 1024.0f)}];
 
         //记录10分钟
-        if (self.records.count > 600) {
-            [self.records removeObjectAtIndex:0];
+        if (self.upFlows.count > 600) {
+            [self.upFlows removeObjectAtIndex:0];
+        }
+
+        //记录10分钟
+        if (self.downFlows.count > 600) {
+            [self.downFlows removeObjectAtIndex:0];
         }
 
         if (self.netBlock) {

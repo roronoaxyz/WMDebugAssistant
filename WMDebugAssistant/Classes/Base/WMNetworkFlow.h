@@ -17,8 +17,11 @@
 @property (nonatomic, assign) u_int32_t kWWANSent;
 @property (nonatomic, assign) u_int32_t kWWANReceived;
 
-/** 获取 流量 记录 **/
-- (NSArray *)getRecords;
+/** 获取 下载 记录 **/
+- (NSArray *)getDownFlow;
+
+/** 获取 上传 记录 **/
+- (NSArray *)getUpFlow;
 
 /** 是否激活中 **/
 - (BOOL)isActived;

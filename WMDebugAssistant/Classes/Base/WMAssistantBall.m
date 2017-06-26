@@ -119,48 +119,22 @@
             [__self doDisplayCpu:cpuUsage];
         }];
     }
-    else {
-        [self.cpuHelper stop];
-
-        UIButton *cpuButton = [self.contentView viewWithTag:0x999];
-        [cpuButton setTitle:@"CPU" forState:UIControlStateNormal];
-    }
 
     if (![self.memHelper isActived]) {
         [self.memHelper startblock:^(CGFloat usedMemory) {
             [__self doDisplayMemory:usedMemory];
         }];
     }
-    else {
-        [self.memHelper stop];
-
-        UIButton *memButton = [self.contentView viewWithTag:0x999+1];
-        [memButton setTitle:@"内存" forState:UIControlStateNormal];
-    }
-
     if (![self.networkFlow isActived]) {
         [self.networkFlow startblock:^(u_int32_t sendFlow, u_int32_t receivedFlow) {
             [__self doDisplayNet:sendFlow receivedFlow:receivedFlow];
         }];
     }
-    else {
-        [self.networkFlow stop];
-
-        UIButton *netButton = [self.contentView viewWithTag:0x999+2];
-        [netButton setTitle:@"流量" forState:UIControlStateNormal];
-    }
-
 
     if (![self.fpsHelper isActived]) {
         [self.fpsHelper startblock:^(CGFloat fps) {
             [__self doDisplayfps:fps];
         }];
-    }
-    else {
-        [self.fpsHelper stop];
-
-        UIButton *fpsButton = [self.contentView viewWithTag:0x999+3];
-        [fpsButton setTitle:@"FPS" forState:UIControlStateNormal];
     }
 }
 
@@ -365,9 +339,12 @@
 }
 
 - (void)doDisplayNet:(u_int32_t)sendFlow receivedFlow:(u_int32_t)receivedFlow {
-    UIButton *flowButton = [self.contentView viewWithTag:0x999 + 2];
-    NSString *flowString = [NSString stringWithFormat:@"%.2f MB", receivedFlow /1024.0f / 1024.0f];
-    [flowButton setTitle:flowString forState:UIControlStateNormal];
+    UIButton *downButton = [self.contentView viewWithTag:0x999 + 2];
+    UIButton *upButton = [self.contentView viewWithTag:0x999 + 3];
+    NSString *sendString = [NSString stringWithFormat:@"%.2f MB", sendFlow /1024.0f / 1024.0f];
+    NSString *downString = [NSString stringWithFormat:@"%.2f MB", receivedFlow /1024.0f / 1024.0f];
+    [upButton setTitle:sendString forState:UIControlStateNormal];
+    [downButton setTitle:downString forState:UIControlStateNormal];
 }
 
 #pragma mark  ------- fps ----------
@@ -377,7 +354,7 @@
 }
 
 - (void)doDisplayfps:(CGFloat)fps {
-    UIButton *fpsButton = [self.contentView viewWithTag:0x999 + 3];
+    UIButton *fpsButton = [self.contentView viewWithTag:0x999 + 4];
     NSString *fpsString = [NSString stringWithFormat:@"%.0ffps", fps];
     [fpsButton setTitle:fpsString forState:UIControlStateNormal];
 
@@ -406,7 +383,7 @@
 }
 
 - (void)setButtons{
-    self.itemArray = @[@"CPU",@"内存", @"流量",@"FPS"];
+    self.itemArray = @[@"CPU",@"内存", @"下载", @"上传",@"FPS"];
     if (self.addtionItems.count <= 6) {
         self.itemArray = [self.itemArray arrayByAddingObjectsFromArray:self.addtionItems];
     }
@@ -642,8 +619,13 @@
         aCtrl.unit = @"MB";
     }
     else if (flag == 3) {
-        aCtrl.title = @"流量";
-        aCtrl.records = [self.networkFlow getRecords];
+        aCtrl.title = @"下载";
+        aCtrl.records = [self.networkFlow getDownFlow];
+        aCtrl.unit = @"MB";
+    }
+    else if (flag == 4) {
+        aCtrl.title = @"上传";
+        aCtrl.records = [self.networkFlow getUpFlow];
         aCtrl.unit = @"MB";
     }
     //

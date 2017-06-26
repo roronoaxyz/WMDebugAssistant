@@ -31,7 +31,7 @@
 
 //@property (strong, nonatomic) WMAssistantBall *assistantBall;
     self.assistantBall = [[WMAssistantBall alloc] init];//一定要作为一个局部属性
-    self.assistantBall.addtionItems = @[@"暗门", @"接口数", @"网络", @"日志"];     //额外加一些按钮
+    self.assistantBall.addtionItems = @[@"暗门", @"接口数", @"日志"];     //额外加一些按钮
     self.assistantBall.ballColor = [UIColor blueColor];       //按钮颜色
     self.assistantBall.shapeColor = [UIColor redColor];           //移动时的光圈颜色
     [self.assistantBall doWork];              //很重要 一定要调用
@@ -52,8 +52,11 @@
     else if ([title isEqualToString:@"内存"]) {
         [self.assistantBall makeChart:2 pCtrl:self];
     }
-    else if ([title isEqualToString:@"流量"]) {
+    else if ([title isEqualToString:@"下载"]) {
         [self.assistantBall makeChart:3 pCtrl:self];
+    }
+    else if ([title isEqualToString:@"上传"]) {
+        [self.assistantBall makeChart:4 pCtrl:self];
     }
 }
 
