@@ -11,6 +11,7 @@
 
 @interface WMViewController ()
 @property (strong, nonatomic) WMAssistantBall *assistantBall;
+@property (assign, nonatomic) BOOL isObserverIng;       //正在监测
 
 @end
 
@@ -27,6 +28,8 @@
     self.extendedLayoutIncludesOpaqueBars = NO;
     self.edgesForExtendedLayout = UIRectEdgeNone;
     self.automaticallyAdjustsScrollViewInsets = YES;
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"open" style:UIBarButtonItemStylePlain target:self action:@selector(open:)];
 
 
 //@property (strong, nonatomic) WMAssistantBall *assistantBall;
@@ -57,6 +60,17 @@
     }
     else if ([title isEqualToString:@"上传"]) {
         [self.assistantBall makeChart:4 pCtrl:self];
+    }
+}
+
+- (void)open:(id)sender {
+    if (!self.isObserverIng) {
+        self.isObserverIng = YES;
+        [self.assistantBall startObserver];              //
+    }
+    else {
+        self.isObserverIng = NO;
+        [self.assistantBall stopObserver];              //
     }
 }
 

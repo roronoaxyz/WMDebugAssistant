@@ -42,6 +42,8 @@
 @property (nonatomic, strong) WMNetworkFlow *networkFlow;       //流量
 @property (nonatomic, strong) WMFpsHelper *fpsHelper;       //fps
 
+@property (assign, nonatomic) BOOL isObserverIng;       //正在监测
+
 
 @end
 
@@ -110,9 +112,11 @@
     }
 }
 
-#pragma mark  ------- 附属按钮 ----------
+#pragma mark  ------- 开始观测 ----------
 
-- (void)doOther:(id)sender {
+- (void)startObserver {
+    self.isObserverIng = YES;
+
     WMWS(__self)
     if (![self.cpuHelper isActived]) {
         [self.cpuHelper startblock:^(CGFloat cpuUsage) {
@@ -135,6 +139,22 @@
         [self.fpsHelper startblock:^(CGFloat fps) {
             [__self doDisplayfps:fps];
         }];
+    }
+}
+- (void)stopObserver {
+    self.isObserverIng = NO;
+
+    if ([self.cpuHelper isActived]) {
+        [self.cpuHelper stop];
+    }
+    if ([self.memHelper isActived]) {
+        [self.memHelper stop];
+    }
+    if ([self.networkFlow isActived]) {
+        [self.networkFlow stop];
+    }
+    if ([self.fpsHelper isActived]) {
+        [self.fpsHelper stop];
     }
 }
 
@@ -590,9 +610,6 @@
 
     //描边
     [self doBorderWidth];
-
-    //开启功能
-    [self doOther:nil];
 }
 
 /** 通过标题获取按钮 默认的4个是 @"CPU",@"内存", @"流量",@"FPS" **/

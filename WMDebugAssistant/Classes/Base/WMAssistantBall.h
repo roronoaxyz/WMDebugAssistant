@@ -22,6 +22,12 @@
 /** 只能调用一次 后面几次不会生效 **/
 - (void)doWork;
 
+/** 开始观测 cpu 等 **/
+- (void)startObserver;
+
+/** 停止观测 **/
+- (void)stopObserver;
+
 /** 通过标题获取按钮 默认的4个是 @"CPU",@"内存", @"流量",@"FPS" **/
 - (UIButton *)buttonOfTitle:(NSString *)title;
 
