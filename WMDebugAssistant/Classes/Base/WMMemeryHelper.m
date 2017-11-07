@@ -52,8 +52,8 @@
     CGFloat u = [WMMemeryHelper getUsedMemory];
     [self.records addObject:@{@"date":[NSDate date], @"value":@(u)}];
 
-    //记录10分钟
-    if (self.records.count > 600) {
+    //记录1小时
+    if (self.records.count > 60*60) {
         [self.records removeObjectAtIndex:0];
     }
 

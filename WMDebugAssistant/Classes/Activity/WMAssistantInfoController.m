@@ -7,15 +7,15 @@
 //
 
 #import "WMAssistantInfoController.h"
-#import "WMChartLine.h"
+#import "WMLineChartView.h"
 
 #define WMWS(weakSelf)  __weak __typeof(&*self)weakSelf = self;/** 弱引用自己 */
 
 @interface WMAssistantInfoController () {
 
     UIButton *dButton;
-    WMChartLine *v;
     UILabel *pointLbl; //点击的标签
+    WMLineChartView *lineChartView;
 }
 
 @property (nonatomic, strong) NSMutableArray *x_vls;        //x轴
@@ -62,61 +62,27 @@
     self.x_vls = [NSMutableArray new];
     self.y_vls = [NSMutableArray new];
 
+    CGFloat maxY = 0;
+
     //日期对应数据
     for (int i =0; i<self.records.count; i++) {
         NSDictionary *dict = self.records[i];
 
         [self.x_vls addObject:@(i).stringValue];
 
+        CGFloat value = [dict[@"value"] floatValue];
+        if (value > maxY) {
+            maxY = value;
+        }
+
         NSString *yText = [dict[@"value"] stringValue];
         [self.y_vls addObject:yText];
     }
-    //创建折线图
-    v = [[WMChartLine alloc] init];
-    v.frame = self.view.bounds;
-    //折线名称
-    v.y_titles = @[self.title];
-    // x轴坐标数组
-    v.x_values = self.x_vls;
-    // y轴坐标数组
-    v.y_values = @[self.y_vls];
-    // y 轴单位
-    v.y_unit = self.unit;
 
-    [v setXCoordinatesLocationInYValue:0];
-    [v setCoordPlusAndMinusSymmetryShowZeroPoint:NO];
-    [self.view addSubview:v];
+    lineChartView = [[WMLineChartView alloc] initWithFrame:self.view.bounds xTitleArray:self.x_vls yValueArray:self.y_vls yMax:maxY yMin:0.0 unit:self.unit];
+    [self.view addSubview:lineChartView];
 
-    [v startDrawWithLineType:WMChartLineTypeCurve];
 
-    WMWS(__self)
-    v.clickPoint = ^(NSInteger index) {
-        [__self clickPoint:index];
-    };
-
-}
-
-- (void)clickPoint:(NSInteger)index  {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = @"hh:mm:ss";
-
-    NSDictionary *dict = self.records[index];
-    NSDate *date =  dict[@"date"];
-    CGFloat value =  [dict[@"value"] floatValue];
-    NSString *d = [formatter stringFromDate:date];
-
-    NSString *title = [NSString stringWithFormat:@"%@", self.title];
-    NSString *info = [NSString stringWithFormat:@"%@ : %.2f%@", d, value, self.unit];
-
-    if (!pointLbl) {
-        pointLbl = [UILabel new];
-        pointLbl.numberOfLines = 1;
-        pointLbl.font = [UIFont systemFontOfSize:13];
-        pointLbl.frame = CGRectMake(72, 0, 240, 32);
-        [self.view addSubview:pointLbl];
-    }
-
-    pointLbl.text = [NSString stringWithFormat:@"%@:%@", title, info];
 }
 
 @end

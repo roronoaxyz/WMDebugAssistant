@@ -1,5 +1,5 @@
 PODS:
-  - WMDebugAssistant (0.1.4)
+  - WMDebugAssistant (0.2.1)
 
 DEPENDENCIES:
   - WMDebugAssistant (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  WMDebugAssistant: fcb23e98fe0d1a5a7f58a51059b8f3a2766d9d85
+  WMDebugAssistant: 0fffb90c8de1c718fe08c8383aaadecb7e3d1b04
 
 PODFILE CHECKSUM: 86823730e6fc251818b6798efe2c050af46fd996
 
