@@ -73,6 +73,13 @@
 - (void)dealloc {
 
 }
+- (void)makeKeyWindow {
+    [self.window makeKeyWindow];
+}
+
+- (void)becomeKeyWindow {
+    [self.window becomeKeyWindow];
+}
 
 #pragma mark  ------- contentview ----------
 - (void)loadContentView {
