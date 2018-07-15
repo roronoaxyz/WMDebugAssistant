@@ -42,8 +42,6 @@
 @property (nonatomic, strong) WMNetworkFlow *networkFlow;       //流量
 @property (nonatomic, strong) WMFpsHelper *fpsHelper;       //fps
 
-@property (assign, nonatomic) BOOL isObserverIng;       //正在监测
-
 
 @end
 
@@ -122,7 +120,7 @@
 #pragma mark  ------- 开始观测 ----------
 
 - (void)startObserver {
-    self.isObserverIng = YES;
+    _isObserverIng = YES;
 
     WMWS(__self)
     if (![self.cpuHelper isActived]) {
@@ -149,7 +147,7 @@
     }
 }
 - (void)stopObserver {
-    self.isObserverIng = NO;
+    _isObserverIng = NO;
 
     if ([self.cpuHelper isActived]) {
         [self.cpuHelper stop];
