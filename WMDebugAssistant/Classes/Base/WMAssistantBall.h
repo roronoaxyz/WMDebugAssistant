@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSArray *addtionItems;        //额外的选项 用户可以自定义 nsstring , 大于6个不处理
 
 @property (nonatomic, copy) void (^selectBlock)(NSString *title, UIButton *button);  //选择 返回的字符串是 addtionItems 中的内容
-
+@property (nonatomic, readonly) BOOL isObserverIng;       //正在监测，可以供外界查询是否处于正在监测的状态
 /** 显示 在属性配置完成之后 **/
 /** 只能调用一次 后面几次不会生效 **/
 - (void)doWork;
