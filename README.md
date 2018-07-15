@@ -9,7 +9,7 @@
  ![image](https://github.com/roronoaxyz/WMDebugAssistant/blob/master/Example/assistant.gif)
 
 ## pod使用
-pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.git", :tag => '0.1.2'
+pod 'WMDebugAssistant' ,:git=>"https://github.com/roronoaxyz/WMDebugAssistant.git", :tag => '0.2.3'
 
 
 悬浮球 添加在第一个界面生成后  因为它本身是个 UIWindow
